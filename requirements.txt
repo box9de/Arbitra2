@@ -1,0 +1,8 @@
+ccxt
+PySide6
+python-dotenv
+
+# Официальные SDK (стабильные)
+pybit
+binance-connector
+python-okx

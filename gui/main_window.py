@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget, QStatusBar,
 from PySide6.QtCore import QTimer, Signal, Slot
 from gui.tabs.exchanges_tab import ExchangesTab
 from gui.tabs.monitoring_tab import MonitoringTab
+from gui.tabs.global_registry_tab import GlobalRegistryTab   # ← добавлено
 from core.live_updater import LiveUpdater
 from loguru import logger
 
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow):
 
         self.tabs.addTab(ExchangesTab(), "Биржи")
         self.tabs.addTab(MonitoringTab(), "Мониторинг")
+        self.tabs.addTab(GlobalRegistryTab(), "Глобальный реестр")   # ← добавлено
 
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)

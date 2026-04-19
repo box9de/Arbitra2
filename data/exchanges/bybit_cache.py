@@ -1,3 +1,6 @@
+import os
+import json
+
 def load_bybit_markets():
     """Точная оригинальная функция из Arbitra1 — загружает кэш рынков Bybit (spot + futures)."""
     cache_file = "data/exchanges/bybit_markets_cache.json"

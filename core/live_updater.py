@@ -1,18 +1,19 @@
 import time
-import threading
 import requests
 from PySide6.QtCore import QThread, Signal, QObject
 from binance.spot import Spot
-from binance.um_futures import UMFutures
 from pybit.unified_trading import HTTP
-from okx import MarketData
+import okx.MarketData as MarketData
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# ← Добавлено: полностью убираем спам httpx в консоль
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
 class LiveUpdater(QObject):
-    data_ready = Signal(str, object)  # exchange_name, data_dict
+    data_ready = Signal(str, object)
 
     def __init__(self, exchanges):
         super().__init__()
@@ -44,23 +45,46 @@ class LiveUpdater(QObject):
     def _fetch_live_data(self, exchange_name):
         if exchange_name == "Binance":
             spot_client = Spot()
-            futures_client = UMFutures()
             tickers_spot = spot_client.ticker_24hr()
-            tickers_fut = futures_client.ticker_24hr_price_change()
+            spot_dict = {t['symbol']: t for t in tickers_spot}
+
+            tickers_fut = self._get_binance_futures_tickers()
+            fut_dict = {t['symbol']: t for t in tickers_fut}
+
             funding_rates = self._get_binance_funding_rates()
-            return {"spot": tickers_spot, "futures": tickers_fut, "funding": funding_rates}
+
+            return {"spot": spot_dict, "futures": fut_dict, "funding": funding_rates}
 
         elif exchange_name == "Bybit":
             session = HTTP(testnet=False, api_key="", api_secret="")
-            tickers = session.get_tickers(category="spot", symbol="*")
-            funding = session.get_funding_rate(symbol="*")
-            return {"spot": tickers, "funding": funding}
+            
+            # Spot (уже работал)
+            tickers_spot = session.get_tickers(category="spot")
+            spot_dict = {t['symbol']: t for t in tickers_spot['result']['list']}
+            
+            # Futures (новое — линейные USDT perpetual)
+            tickers_fut = session.get_tickers(category="linear")
+            fut_dict = {t['symbol']: t for t in tickers_fut['result']['list']}
+
+            return {"spot": spot_dict, "futures": fut_dict, "funding": {}}
 
         elif exchange_name == "OKX":
-            market = MarketData()
-            tickers = market.get_tickers(instType="SPOT")
-            funding = market.get_funding_rate(instType="SWAP")
-            return {"spot": tickers, "funding": funding}
+            market = MarketData.MarketAPI(flag="0")
+            
+            # Spot (уже работал)
+            tickers_spot = market.get_tickers(instType="SPOT")
+            spot_dict = {t['instId']: t for t in tickers_spot['data']}
+            
+            # Futures (новое — perpetual SWAP)
+            tickers_fut = market.get_tickers(instType="SWAP")
+            fut_dict = {t['instId']: t for t in tickers_fut['data']}
+
+            return {"spot": spot_dict, "futures": fut_dict, "funding": {}}
+                
+    def _get_binance_futures_tickers(self):
+        url = "https://fapi.binance.com/fapi/v1/ticker/24hr"
+        response = requests.get(url, timeout=5)
+        return response.json()
 
     def _get_binance_funding_rates(self):
         url = "https://fapi.binance.com/fapi/v1/premiumIndex"

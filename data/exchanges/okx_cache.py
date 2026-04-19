@@ -1,3 +1,6 @@
+import os
+import json
+
 def load_okx_markets():
     """Точная оригинальная функция из Arbitra1 — загружает кэш рынков OKX (spot + futures)."""
     cache_file = "data/exchanges/okx_markets_cache.json"

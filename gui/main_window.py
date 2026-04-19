@@ -77,6 +77,6 @@ class MainWindow(QMainWindow):
             tab_widget.okx_tab.update_futures_table(data.get("futures", {}))
 
     def closeEvent(self, event):
-        if hasattr(self, 'live_updater') and self.live_updater.isRunning():
+        if hasattr(self, 'live_updater') and self.live_updater.running:  # ← исправлено
             self.live_updater.stop()
         event.accept()

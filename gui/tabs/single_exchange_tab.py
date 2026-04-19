@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
     QHeaderView   # ← добавлено сюда
 )
 from PySide6.QtCore import Qt
+import os
 import json
 import time
 
@@ -34,9 +35,7 @@ class SingleExchangeTab(QWidget):
         self.save_button = QPushButton("Сохранить ключи")
         self.import_button = QPushButton("Импортировать токены")
 
-        self.progress = QProgressDialog("Загрузка данных...", "Отмена", 0, 0, self)
-        self.progress.setWindowModality(Qt.WindowModal)
-
+        # ← Убрали полностью QProgressDialog (окно загрузки больше не появляется)
         self._setup_tables()
         self._setup_layouts()
         self._load_saved_keys()
@@ -102,10 +101,6 @@ class SingleExchangeTab(QWidget):
         if not file_name:
             return
 
-        self.progress.setLabelText(f"Импорт токенов с {file_name}...")
-        self.progress.setMaximum(100)
-        self.progress.show()
-
         try:
             with open(file_name, 'r') as f:
                 tokens = json.load(f)
@@ -123,20 +118,15 @@ class SingleExchangeTab(QWidget):
             imported_count = 0
             total = len(tokens)
             for i, token in enumerate(tokens):
-                self.progress.setValue(int(i / total * 100))
+                # ← Убрали progress.setValue и progress.show/close
                 if token in markets:
                     token_registry.add_token(token, self.exchange_name)
                     imported_count += 1
 
-            self.progress.setValue(100)
-            time.sleep(0.5)
-            self.progress.close()
-
             QMessageBox.information(self, "Успех", f"Импортировано {imported_count} токенов.")
         except Exception as e:
-            self.progress.close()
             QMessageBox.critical(self, "Ошибка", f"Не удалось импортировать: {str(e)}")
-
+            
     def refresh_data(self):
         try:
             exchange_class = get_exchange_class(self.exchange_name)
@@ -162,8 +152,12 @@ class SingleExchangeTab(QWidget):
         self.spot_table.blockSignals(True)
         self.spot_table.setUpdatesEnabled(False)
 
-        # Точная оригинальная сортировка Arbitra1 + ограничение 200 строк
-        sorted_data = sorted(data.items(), key=lambda x: float(x[1].get('quoteVolume', 0)), reverse=True)[:200]
+        # Сняли ограничение 200 строк (теперь грузим ВСЁ)
+        sorted_data = sorted(
+            data.items(),
+            key=lambda x: float(x[1].get('quoteVolume', 0) or 0),
+            reverse=True
+        )
 
         needed_rows = len(sorted_data)
         current_rows = self.spot_table.rowCount()
@@ -172,13 +166,13 @@ class SingleExchangeTab(QWidget):
             self.spot_table.setRowCount(needed_rows)
 
         for row, (symbol, ticker) in enumerate(sorted_data):
-            price = ticker.get('last', 0)
-            volume = ticker.get('baseVolume', 0)
-            change = ticker.get('percentage', 0)
-            high = ticker.get('high', 0)
-            low = ticker.get('low', 0)
-            open_price = ticker.get('open', 0)
-            quote_volume = ticker.get('quoteVolume', 0)
+            price = float(ticker.get('last', 0) or 0)
+            volume = float(ticker.get('baseVolume', 0) or 0)
+            change = float(ticker.get('percentage', 0) or 0)
+            high = float(ticker.get('high', 0) or 0)
+            low = float(ticker.get('low', 0) or 0)
+            open_price = float(ticker.get('open', 0) or 0)
+            quote_volume = float(ticker.get('quoteVolume', 0) or 0)
 
             self.spot_table.setItem(row, 0, QTableWidgetItem(symbol))
             self.spot_table.setItem(row, 1, QTableWidgetItem(f"{price:.8f}"))
@@ -196,8 +190,13 @@ class SingleExchangeTab(QWidget):
         self.futures_table.blockSignals(True)
         self.futures_table.setUpdatesEnabled(False)
 
-        # Точная оригинальная сортировка + анти-скачывание строк (как было исправлено в чате)
-        sorted_data = sorted(data.items(), key=lambda x: float(x[1].get('volume', 0) or x[1].get('quoteVolume', 0)), reverse=True)[:200]
+        # Сняли ограничение 200 строк (по твоей просьбе)
+        # + безопасное приведение строк к float (Binance возвращает строки)
+        sorted_data = sorted(
+            data.items(),
+            key=lambda x: float(x[1].get('volume', 0) or x[1].get('quoteVolume', 0) or 0),
+            reverse=True
+        )
 
         needed_rows = len(sorted_data)
         current_rows = self.futures_table.rowCount()
@@ -206,14 +205,14 @@ class SingleExchangeTab(QWidget):
             self.futures_table.setRowCount(needed_rows)
 
         for row, (symbol, info) in enumerate(sorted_data):
-            price = info.get('last', info.get('markPrice', 0))
-            volume = info.get('volume', info.get('baseVolume', 0))
-            funding = info.get('fundingRate', 0)
-            mark_price = info.get('markPrice', 0)
-            index_price = info.get('indexPrice', 0)
-            change = info.get('percentage', 0)
-            high = info.get('high', 0)
-            low = info.get('low', 0)
+            price = float(info.get('last', info.get('markPrice', 0) or 0))
+            volume = float(info.get('volume', info.get('baseVolume', 0) or 0))
+            funding = float(info.get('fundingRate', 0) or 0)
+            mark_price = float(info.get('markPrice', 0) or 0)
+            index_price = float(info.get('indexPrice', 0) or 0)
+            change = float(info.get('percentage', 0) or 0)
+            high = float(info.get('high', 0) or 0)
+            low = float(info.get('low', 0) or 0)
 
             self.futures_table.setItem(row, 0, QTableWidgetItem(symbol))
             self.futures_table.setItem(row, 1, QTableWidgetItem(f"{price:.8f}"))

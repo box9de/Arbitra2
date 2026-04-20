@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QLineEdit,
     QPushButton, QMessageBox, QInputDialog
 )
-from PySide6.QtCore import Qt, Signal   # ← Signal добавлен
+from PySide6.QtCore import Qt, Signal
 
 import os
 import json
@@ -11,10 +11,14 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import base64
 
+# Клиенты бирж
+from binance.spot import Spot
+from pybit.unified_trading import HTTP
+import okx.Account as AccountAPI
+
 
 class MasterPasswordDialog(QDialog):
-    """Кастомное окно ввода мастер-пароля"""
-    forgot_clicked = Signal()   # теперь работает
+    forgot_clicked = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -139,13 +143,11 @@ class ApiKeysDialog(QDialog):
 
         layout.addLayout(grid)
 
+    # ==================== ПЕРВОЕ ПРИВЕТСТВИЕ И ЗАГРУЗКА ====================
     def show_first_time_welcome(self):
-        QMessageBox.information(
-            self,
-            "Добро пожаловать!",
-            "Вы направляетесь в зону защищённой информации.\n\n"
-            "Для безопасного хранения API-ключей создайте мастер-пароль."
-        )
+        QMessageBox.information(self, "Добро пожаловать!", 
+                                "Вы направляетесь в зону защищённой информации.\n\n"
+                                "Для безопасного хранения API-ключей создайте мастер-пароль.")
 
         while True:
             password, ok = QInputDialog.getText(self, "Создание мастер-пароля", "Введите мастер-пароль:", QLineEdit.Password)
@@ -207,6 +209,7 @@ class ApiKeysDialog(QDialog):
         key = base64.urlsafe_b64encode(kdf.derive(master_password.encode()))
         return Fernet(key)
 
+    # ==================== СОХРАНЕНИЕ И ПРОВЕРКА ====================
     def save_key(self, exchange: str, key_edit: QLineEdit, secret_edit: QLineEdit):
         if not self.master_key:
             return
@@ -246,7 +249,55 @@ class ApiKeysDialog(QDialog):
             status.setStyleSheet("color: #4caf50; font-weight: bold;" if connected else "color: gray;")
 
     def test_connection(self, exchange: str):
-        QMessageBox.information(self, "Проверка", f"Проверка соединения {exchange} будет добавлена позже.")
+        """Реальная проверка соединения с биржей"""
+        try:
+            # Загружаем актуальные ключи из зашифрованного файла
+            with open(self.encrypted_file, "rb") as f:
+                encrypted_data = f.read()
+            fernet = self.get_fernet(self.master_key)
+            data = json.loads(fernet.decrypt(encrypted_data).decode())
+
+            creds = data.get(exchange, {})
+            api_key = creds.get("api_key")
+            api_secret = creds.get("api_secret")
+
+            if not api_key or not api_secret:
+                QMessageBox.warning(self, "Ошибка", f"Для {exchange} не заданы API Key / Secret.")
+                return
+
+            success = False
+
+            if exchange == "Binance":
+                client = Spot(api_key=api_key, api_secret=api_secret)
+                client.ping()                          # Простая проверка
+                success = True
+
+            elif exchange == "Bybit":
+                session = HTTP(api_key=api_key, api_secret=api_secret, testnet=False)
+                session.get_server_time()              # ← исправленный метод
+                success = True
+
+            elif exchange == "OKX":
+                account = AccountAPI.AccountAPI(
+                    api_key=api_key,
+                    api_secret_key=api_secret,
+                    passphrase="",          # OKX требует passphrase (можно оставить пустым)
+                    flag="0"                # 0 = live
+                )
+                account.get_account_balance()   # private запрос
+                success = True
+
+            if success:
+                self.update_status(exchange, True)
+                QMessageBox.information(self, "Успех", f"✅ {exchange}: соединение успешно!")
+            else:
+                self.update_status(exchange, False)
+                QMessageBox.warning(self, "Ошибка", f"{exchange}: проверка не прошла.")
+
+        except Exception as e:
+            self.update_status(exchange, False)
+            QMessageBox.critical(self, "Ошибка соединения", 
+                               f"{exchange}: {str(e)}")
 
     def reset_all_keys(self):
         reply = QMessageBox.question(self, "Сброс ключей", 

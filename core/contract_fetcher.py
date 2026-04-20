@@ -1,5 +1,4 @@
 # core/contract_fetcher.py
-import time
 import json
 import os
 from binance.spot import Spot
@@ -8,6 +7,7 @@ import okx.Account as AccountAPI
 import requests   # ← добавь эту строку
 import hmac
 import hashlib
+import time
 
 from core.token_registry import TokenRegistry
 
@@ -51,19 +51,17 @@ class ContractFetcher:
         addresses_fetched = 0
 
         try:
-            print(f"[Binance] Запрашиваем список монет и адресов контрактов (signed request)...")
+            print(f"[Binance] Запрашиваем список монет и адресов (signed request)...")
 
-            # Создаём signed запрос (обязательно для этого эндпоинта)
             timestamp = int(time.time() * 1000)
-            params = {'timestamp': timestamp}
-            query_string = '&'.join([f"{k}={v}" for k, v in params.items()])
+            params = f"timestamp={timestamp}"
             signature = hmac.new(
-                api_secret.encode('utf-8'),
-                query_string.encode('utf-8'),
+                api_secret.encode('utf-8') if api_secret else b'',
+                params.encode('utf-8'),
                 hashlib.sha256
             ).hexdigest()
 
-            url = f"https://api.binance.com/sapi/v1/capital/config/getall?{query_string}&signature={signature}"
+            url = f"https://api.binance.com/sapi/v1/capital/config/getall?{params}&signature={signature}"
             headers = {'X-MBX-APIKEY': api_key} if api_key else {}
 
             resp = requests.get(url, headers=headers, timeout=20)
@@ -75,28 +73,24 @@ class ContractFetcher:
                 if not base:
                     continue
 
-                # Базовая запись токена
-                token_data = {
-                    "token": base,
-                    "exchange": "Binance",
-                    "mode": "Spot",
-                    "network": "",
-                    "contract_address": "",
-                    "source": "Binance Public Coin Info"
-                }
-                self.registry.add_token_full(token_data)
-                added += 1
+                # УБРАЛИ базовую запись с пустыми полями
+                # Добавляем ТОЛЬКО записи с реальной сетью и адресом
 
-                # Добавляем все сети + адреса контрактов
                 for net in coin.get('networkList', []):
                     if not net.get('depositEnable', False):
                         continue
                     network = net.get('network', '')
                     contract = net.get('contractAddress', '') or net.get('address', '')
                     if contract and network:
-                        token_data["network"] = network
-                        token_data["contract_address"] = contract
-                        self.registry.add_token_full(token_data)
+                        token_data = {
+                            "token": base,
+                            "exchange": "Binance",
+                            "mode": "Spot",
+                            "network": network,
+                            "contract_address": contract,
+                            "source": "Binance Public Coin Info"
+                        }
+                        self.registry.add_token_full(token_data.copy())
                         added += 1
                         addresses_fetched += 1
                         print(f"  → Binance {base} | {network} | {contract[:12]}...")

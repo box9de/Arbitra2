@@ -1,9 +1,15 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget, QStatusBar, QPushButton
+from PySide6.QtWidgets import (
+    QMainWindow, QTabWidget, QToolBar, QApplication, QWidget, QSizePolicy
+)
+from PySide6.QtGui import QAction
 from PySide6.QtCore import QTimer, Signal, Slot
+
 from gui.tabs.exchanges_tab import ExchangesTab
 from gui.tabs.monitoring_tab import MonitoringTab
-from gui.tabs.global_registry_tab import GlobalRegistryTab   # ← добавлено
+from gui.tabs.global_registry_tab import GlobalRegistryTab
+from gui.dialogs.api_keys_dialog import ApiKeysDialog
+
 from core.live_updater import LiveUpdater
 from loguru import logger
 
@@ -14,26 +20,34 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Arbitra1")
         self.resize(1400, 800)
 
+        # Главный QTabWidget
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
 
         self.tabs.addTab(ExchangesTab(), "Биржи")
         self.tabs.addTab(MonitoringTab(), "Мониторинг")
-        self.tabs.addTab(GlobalRegistryTab(), "Глобальный реестр")   # ← добавлено
+        self.tabs.addTab(GlobalRegistryTab(), "Глобальный реестр")
 
-        self.status_bar = QStatusBar()
-        self.setStatusBar(self.status_bar)
-        self.status_bar.showMessage("Готов")
+        # Верхний ToolBar (над вкладками)
+        self.toolbar = QToolBar()
+        self.toolbar.setMovable(False)
+        self.addToolBar(self.toolbar)
 
-        self.auto_update_btn = QPushButton("Автообновление")
-        self.auto_update_btn.clicked.connect(self.toggle_auto_update)
-        self.status_bar.addPermanentWidget(self.auto_update_btn)
+        # Spacer, чтобы кнопка API Keys была в ПРАВОМ углу
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.toolbar.addWidget(spacer)
 
+        # Кнопка API Keys
+        self.action_api_keys = QAction("🔑 API Keys", self)
+        self.action_api_keys.triggered.connect(self.open_api_keys_dialog)
+        self.toolbar.addAction(self.action_api_keys)
+
+        # LiveUpdater
         self.live_updater = LiveUpdater(["Binance", "Bybit", "OKX"])
         self.live_updater.data_ready.connect(self._on_live_data)
         self.updater_started = False
 
-        # Задержка запуска LiveUpdater (точно как в оригинале)
         QTimer.singleShot(2500, self._start_updater_with_retry)
 
     def _start_updater_with_retry(self):
@@ -52,16 +66,7 @@ class MainWindow(QMainWindow):
         if not self.updater_started:
             self.live_updater.start()
             self.updater_started = True
-            self.status_bar.showMessage("LiveUpdater запущен")
             logger.info("LiveUpdater запущен")
-
-    def toggle_auto_update(self):
-        if self.live_updater.isRunning():
-            self.live_updater.stop()
-            self.updater_started = False
-            self.status_bar.showMessage("Автообновление остановлено")
-        else:
-            self._start_live_updater()
 
     @Slot(str, object)
     def _on_live_data(self, exchange_name, data):
@@ -78,7 +83,12 @@ class MainWindow(QMainWindow):
             tab_widget.okx_tab.update_spot_table(data.get("spot", {}))
             tab_widget.okx_tab.update_futures_table(data.get("futures", {}))
 
+    def open_api_keys_dialog(self):
+        """Открывает окно управления API-ключами"""
+        dialog = ApiKeysDialog(self)
+        dialog.exec()
+
     def closeEvent(self, event):
-        if hasattr(self, 'live_updater') and self.live_updater.running:  # ← исправлено
+        if hasattr(self, 'live_updater') and self.live_updater.running:
             self.live_updater.stop()
         event.accept()

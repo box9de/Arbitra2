@@ -3,6 +3,11 @@ import json
 import time
 import requests
 
+from binance.spot import Spot
+from pybit.unified_trading import HTTP
+import okx.Account as AccountAPI
+
+
 class TokenRegistry:
     _instance = None
 
@@ -14,17 +19,32 @@ class TokenRegistry:
         return cls._instance
 
     def add_token_full(self, token_data: dict):
-        """Добавляет или обновляет запись в реестре
-           Дедупликация: token + exchange + mode (как было до улучшения)"""
+        """Жёсткая дедупликация по полному ключу:
+           token + exchange + mode + network + contract_address
+           Это позволяет хранить разные сети и адреса одного токена"""
+        
+        key = (
+            token_data.get("token", ""),
+            token_data.get("exchange", ""),
+            token_data.get("mode", ""),
+            token_data.get("network", ""),
+            token_data.get("contract_address", "")
+        )
+
         for existing in self.tokens:
-            if (existing.get("token") == token_data.get("token") and
-                existing.get("exchange") == token_data.get("exchange") and
-                existing.get("mode") == token_data.get("mode")):
-                # Обновляем существующую запись
-                existing.update(token_data)
+            existing_key = (
+                existing.get("token", ""),
+                existing.get("exchange", ""),
+                existing.get("mode", ""),
+                existing.get("network", ""),
+                existing.get("contract_address", "")
+            )
+            if existing_key == key:
+                existing.update(token_data)   # обновляем данные, если запись уже есть
                 self._save_to_file()
                 return
-        # Если записи нет — добавляем новую
+
+        # Если такой комбинации нет — добавляем новую строку
         self.tokens.append(token_data)
         self._save_to_file()
 
@@ -48,6 +68,7 @@ class TokenRegistry:
         with open("data/token_registry.json", 'w', encoding='utf-8') as f:
             json.dump(self.tokens, f, ensure_ascii=False, indent=2)
 
+    # ====================== COINGECKO ======================
     def import_top_coins_from_coingecko(self, max_pages=20):
         """Этап 1 — Импорт топ-5000 токенов с CoinGecko"""
         base_url = "https://api.coingecko.com/api/v3/coins/markets"
@@ -106,10 +127,10 @@ class TokenRegistry:
                 continue
 
         self._save_to_file()
-        return len(self.tokens)   # ← теперь возвращаем РЕАЛЬНОЕ количество записей в реестре
+        return len(self.tokens)
 
     def enrich_contract_addresses(self):
-        """Этап 2 — Обогащение адресами контрактов"""
+        """Этап 2 CoinGecko — Обогащение адресами контрактов"""
         updated = 0
         base_url = "https://api.coingecko.com/api/v3/coins"
 
@@ -140,16 +161,37 @@ class TokenRegistry:
                 time.sleep(1.3)
 
             except Exception as e:
-                print(f"[Enrich] Ошибка для {entry.get('token')}: {e}")
+                print(f"[Enrich CoinGecko] Ошибка для {entry.get('token')}: {e}")
 
         self._save_to_file()
         return updated
 
+    # ====================== SPOT С БИРЖ ======================
+    def enrich_spot_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
+        """Главный метод — обогащение Spot-токенами и адресами контрактов с бирж"""
+        from core.contract_fetcher import ContractFetcher
+
+        if not master_password:
+            print("[TokenRegistry] Ошибка: мастер-пароль не передан")
+            return 0
+
+        fetcher = ContractFetcher()
+        total = fetcher.enrich_spot_from_exchanges(
+            binance=binance, 
+            bybit=bybit, 
+            okx=okx, 
+            master_password=master_password
+        )
+
+        self._save_to_file()
+        return total
+
+    # ====================== СБРОС ======================
     def clear_registry(self):
         """Полный сброс реестра"""
         self.tokens = []
         self._save_to_file()
 
 
-# Глобальный экземпляр (для совместимости со старым кодом)
+# Глобальный экземпляр
 token_registry = TokenRegistry()

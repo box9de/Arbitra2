@@ -432,6 +432,14 @@
     "source": "Binance Public Coin Info"
   },
   {
+    "token": "STRK",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "STARKNET",
+    "contract_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "source": "Binance Public Coin Info"
+  },
+  {
     "token": "WAVES",
     "exchange": "Binance",
     "mode": "Spot",
@@ -2040,14 +2048,6 @@
     "source": "Binance Public Coin Info"
   },
   {
-    "token": "LINEA",
-    "exchange": "Binance",
-    "mode": "Spot",
-    "network": "LINEA",
-    "contract_address": "0x1789e0043623282d5dcc7f213d703c6d8bafbb04",
-    "source": "Binance Public Coin Info"
-  },
-  {
     "token": "C98",
     "exchange": "Binance",
     "mode": "Spot",
@@ -2568,14 +2568,6 @@
     "source": "Binance Public Coin Info"
   },
   {
-    "token": "MTL",
-    "exchange": "Binance",
-    "mode": "Spot",
-    "network": "MTL",
-    "contract_address": "0xbcfc435d8f276585f6431fc1b9ee9a850b5c00a9",
-    "source": "Binance Public Coin Info"
-  },
-  {
     "token": "VET",
     "exchange": "Binance",
     "mode": "Spot",
@@ -2589,14 +2581,6 @@
     "mode": "Spot",
     "network": "BSC",
     "contract_address": "0x55d398326f99059ff775485246999027b3197955",
-    "source": "Binance Public Coin Info"
-  },
-  {
-    "token": "USDT",
-    "exchange": "Binance",
-    "mode": "Spot",
-    "network": "NEAR",
-    "contract_address": "usdt.tether-token.near",
     "source": "Binance Public Coin Info"
   },
   {
@@ -2909,14 +2893,6 @@
     "mode": "Spot",
     "network": "ETH",
     "contract_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-    "source": "Binance Public Coin Info"
-  },
-  {
-    "token": "USDC",
-    "exchange": "Binance",
-    "mode": "Spot",
-    "network": "NEAR",
-    "contract_address": "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
     "source": "Binance Public Coin Info"
   },
   {
@@ -3381,6 +3357,14 @@
     "mode": "Spot",
     "network": "MATIC",
     "contract_address": "0x8de5b80a0c1b02fe4976851d030b36122dbb8624",
+    "source": "Binance Public Coin Info"
+  },
+  {
+    "token": "CHIP",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "ARBITRUM",
+    "contract_address": "0x0c1c1c109fe34733fca54b82d7b46b75cfb71f6e",
     "source": "Binance Public Coin Info"
   },
   {
@@ -4237,6 +4221,14 @@
     "mode": "Spot",
     "network": "BSC",
     "contract_address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+    "source": "Binance Public Coin Info"
+  },
+  {
+    "token": "ETH",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "STARKNET",
+    "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
     "source": "Binance Public Coin Info"
   },
   {

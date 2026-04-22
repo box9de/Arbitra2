@@ -146,41 +146,81 @@ class ContractFetcher:
 
     # ==================== BYBIT ====================
     def fetch_bybit_spot_deposits(self, master_password: str):
-        api_key, api_secret = self._load_keys(master_password, "Bybit")
         added = 0
         addresses_fetched = 0
 
         try:
-            print(f"[Bybit] Запрашиваем tickers spot...")
-            from pybit.unified_trading import HTTP
-            session = HTTP(api_key=api_key, api_secret=api_secret, testnet=False)
+            print(f"[Bybit] Запрашиваем публичный список монет и адресов...")
 
-            # Получаем все спот-монеты
-            tickers = session.get_tickers(category="spot")
-            symbols = {t['symbol'].split('USDT')[0] for t in tickers['result']['list'] if t['symbol'].endswith('USDT')}
+            api_key, api_secret = self._load_keys(master_password, "Bybit")
 
-            for base in symbols:
-                try:
-                    dep = session.get_deposit_coin_info(coin=base)
-                    if isinstance(dep, dict) and 'result' in dep:
-                        for net_info in dep.get('result', []):
-                            network = net_info.get('chain', '') or net_info.get('network', '')
-                            contract = net_info.get('contractAddress', '') or net_info.get('address', '')
-                            if contract and network:
-                                token_data = {
-                                    "token": base,
-                                    "exchange": "Bybit",
-                                    "mode": "Spot",
-                                    "network": network,
-                                    "contract_address": contract,
-                                    "source": "Bybit Deposit API"
-                                }
-                                self.registry.add_token_full(token_data.copy())
-                                added += 1
-                                addresses_fetched += 1
-                                print(f"  → Bybit {base} | {network} | {contract[:12]}...")
-                except:
-                    continue  # пропускаем монеты без депозита
+            import requests
+            import time
+            import hmac
+            import hashlib
+
+            url = "https://api.bybit.com/v5/asset/coin/query-info"
+            timestamp = str(int(time.time() * 1000))
+            recv_window = "10000"
+            query_string = f"recvWindow={recv_window}"
+
+            # Правильная строка подписи Bybit v5 (timestamp + api_key + recv_window + query_string)
+            param_str = f"{timestamp}{api_key}{recv_window}{query_string}"
+            signature = hmac.new(
+                api_secret.encode('utf-8'),
+                param_str.encode('utf-8'),
+                hashlib.sha256
+            ).hexdigest()
+
+            headers = {
+                'X-BAPI-API-KEY': api_key,
+                'X-BAPI-SIGN': signature,
+                'X-BAPI-TIMESTAMP': timestamp,
+                'X-BAPI-RECV-WINDOW': recv_window,
+                'Content-Type': 'application/json'
+            }
+
+            full_url = f"{url}?{query_string}"
+
+            resp = requests.get(full_url, headers=headers, timeout=15)
+            print(f"[DEBUG Bybit] Status code: {resp.status_code}")
+
+            if resp.status_code != 200:
+                print(f"[DEBUG Bybit] Response: {resp.text[:500]}...")
+                return 0
+
+            data = resp.json()
+            print(f"[DEBUG Bybit] retCode: {data.get('retCode')}, retMsg: {data.get('retMsg')}")
+
+            coin_list = data.get('result', {}).get('rows', [])
+            print(f"[DEBUG Bybit] Найдено монет: {len(coin_list)}")
+
+            for coin in coin_list:
+                base = coin.get('coin')
+                if not base:
+                    continue
+
+                chains = coin.get('chains', [])
+                for net in chains:
+                    network = net.get('chain', '') or net.get('chainType', '')
+                    contract = net.get('contractAddress', '')
+
+                    token_data = {
+                        "token": base,
+                        "exchange": "Bybit",
+                        "mode": "Spot",
+                        "network": network.upper() if network else "",
+                        "contract_address": contract,
+                        "source": "Bybit v5 Coin Info"
+                    }
+                    self.registry.add_token_full(token_data.copy())
+                    added += 1
+
+                    if contract and network:
+                        addresses_fetched += 1
+                        print(f"  → Bybit {base} | {network} | {contract[:12]}...")
+                    else:
+                        print(f"  → Bybit {base} | {network or '---'} | {contract or '---'}")
 
             print(f"[Bybit Spot] Итого записей: {added} | Успешно получено адресов: {addresses_fetched}")
             return added

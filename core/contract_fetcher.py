@@ -197,11 +197,45 @@ class ContractFetcher:
         try:
             print(f"[OKX] Запрашиваем публичный список монет и адресов...")
 
+            # Загружаем конфиг
+            config = self._load_encrypted_config(master_password)
+            okx_data = config.get('OKX', {})
+            api_key = okx_data.get('api_key', '') or okx_data.get('key', '')
+            api_secret = okx_data.get('api_secret', '') or okx_data.get('secret', '')
+            passphrase = okx_data.get('passphrase', '') or okx_data.get('pass', '')
+
+            if not passphrase:
+                print("[OKX] Passphrase не найден в конфиге.")
+                passphrase = input("Введите OKX Passphrase: ").strip()
+
+            print(f"[DEBUG OKX] Key: {len(api_key)} | Secret: {len(api_secret)} | Passphrase: {len(passphrase)}")
+
             import requests
+            import time
+            import hmac
+            import hashlib
+            import base64
+            from datetime import datetime, timezone
+
+            # Синхронизация времени
+            time_resp = requests.get("https://www.okx.com/api/v5/public/time", timeout=10)
+            server_ts = int(time_resp.json()['data'][0]['ts'])
+            timestamp = datetime.fromtimestamp(server_ts / 1000, tz=timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+
+            method = "GET"
+            request_path = "/api/v5/asset/currencies"
+            pre_hash = timestamp + method + request_path
+            signature = base64.b64encode(
+                hmac.new(api_secret.encode('utf-8'), pre_hash.encode('utf-8'), hashlib.sha256).digest()
+            ).decode('utf-8')
+
             headers = {
+                'OK-ACCESS-KEY': api_key,
+                'OK-ACCESS-SIGN': signature,
+                'OK-ACCESS-TIMESTAMP': timestamp,
+                'OK-ACCESS-PASSPHRASE': passphrase,
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
                 'Accept': 'application/json',
-                'Referer': 'https://www.okx.com'
             }
 
             resp = requests.get(
@@ -209,7 +243,12 @@ class ContractFetcher:
                 headers=headers,
                 timeout=20
             )
-            resp.raise_for_status()
+
+            print(f"[DEBUG OKX] Status code: {resp.status_code}")
+            if resp.status_code != 200:
+                print(f"[DEBUG OKX] Response: {resp.text[:400]}...")
+                return 0
+
             data = resp.json()
 
             for coin in data.get('data', []):
@@ -217,22 +256,27 @@ class ContractFetcher:
                 if not base:
                     continue
 
-                chain = coin.get('chain', '').replace('-', '')
-                contract = coin.get('contractAddr', '') or coin.get('addr', '')
+                # Очистка + перевод сети в UPPERCASE
+                raw_chain = coin.get('chain', '')
+                chain = raw_chain.replace(base, '').replace('-', '').strip().upper() or raw_chain.upper()
+                contract = coin.get('ctAddr', '') or coin.get('addr', '')
+
+                token_data = {
+                    "token": base,
+                    "exchange": "OKX",
+                    "mode": "Spot",
+                    "network": chain,
+                    "contract_address": contract,
+                    "source": "OKX Public Currencies"
+                }
+                self.registry.add_token_full(token_data.copy())
+                added += 1
 
                 if contract and chain:
-                    token_data = {
-                        "token": base,
-                        "exchange": "OKX",
-                        "mode": "Spot",
-                        "network": chain,
-                        "contract_address": contract,
-                        "source": "OKX Public Currencies"
-                    }
-                    self.registry.add_token_full(token_data.copy())
-                    added += 1
                     addresses_fetched += 1
                     print(f"  → OKX {base} | {chain} | {contract[:12]}...")
+                else:
+                    print(f"  → OKX {base} | {chain or '---'} | {contract or '---'}")
 
             print(f"[OKX Spot] Итого записей: {added} | Успешно получено адресов: {addresses_fetched}")
             return added

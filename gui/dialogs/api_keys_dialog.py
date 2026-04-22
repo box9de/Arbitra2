@@ -70,7 +70,7 @@ class ApiKeysDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Настройка API Keys")
-        self.resize(830, 210)
+        self.resize(830, 240)
         self.master_key = None
         self.encrypted_file = "config/api_keys.enc"
 
@@ -106,11 +106,13 @@ class ApiKeysDialog(QDialog):
         grid.setSpacing(4)
         grid.setColumnStretch(1, 1)
         grid.setColumnStretch(2, 1)
+        grid.setColumnStretch(3, 1)
 
         grid.addWidget(QLabel("<b>Биржа</b>"), 0, 0)
         grid.addWidget(QLabel("<b>API Key</b>"), 0, 1)
         grid.addWidget(QLabel("<b>API Secret</b>"), 0, 2)
-        grid.addWidget(QLabel("<b>Действия</b>"), 0, 3)
+        grid.addWidget(QLabel("<b>Passphrase</b>"), 0, 3)
+        grid.addWidget(QLabel("<b>Действия</b>"), 0, 4)
 
         self.rows = {}
         exchanges = ["Binance", "Bybit", "OKX"]
@@ -123,27 +125,37 @@ class ApiKeysDialog(QDialog):
             key_edit.setEchoMode(QLineEdit.Password)
             secret_edit = QLineEdit()
             secret_edit.setEchoMode(QLineEdit.Password)
+            passphrase_edit = QLineEdit()
+            passphrase_edit.setEchoMode(QLineEdit.Password) if ex == "OKX" else None
 
             btn_save = QPushButton("Сохранить")
             btn_test = QPushButton("Проверить")
             status = QLabel("Не настроено")
             status.setStyleSheet("color: gray;")
 
-            btn_save.clicked.connect(lambda _, e=ex, k=key_edit, s=secret_edit: self.save_key(e, k, s))
+            btn_save.clicked.connect(lambda _, e=ex, k=key_edit, s=secret_edit, p=passphrase_edit: self.save_key(e, k, s, p))
             btn_test.clicked.connect(lambda _, e=ex: self.test_connection(e))
 
             grid.addWidget(lbl, i, 0)
             grid.addWidget(key_edit, i, 1)
             grid.addWidget(secret_edit, i, 2)
-            grid.addWidget(btn_save, i, 3)
-            grid.addWidget(btn_test, i, 4)
-            grid.addWidget(status, i, 5)
+            if ex == "OKX":
+                grid.addWidget(passphrase_edit, i, 3)
+            else:
+                grid.addWidget(QLabel("—"), i, 3)
+            grid.addWidget(btn_save, i, 4)
+            grid.addWidget(btn_test, i, 5)
+            grid.addWidget(status, i, 6)
 
-            self.rows[ex] = {"key_edit": key_edit, "secret_edit": secret_edit, "status": status}
+            self.rows[ex] = {
+                "key_edit": key_edit,
+                "secret_edit": secret_edit,
+                "passphrase_edit": passphrase_edit if ex == "OKX" else None,
+                "status": status
+            }
 
         layout.addLayout(grid)
 
-    # ==================== ПЕРВОЕ ПРИВЕТСТВИЕ И ЗАГРУЗКА ====================
     def show_first_time_welcome(self):
         QMessageBox.information(self, "Добро пожаловать!", 
                                 "Вы направляетесь в зону защищённой информации.\n\n"
@@ -196,8 +208,11 @@ class ApiKeysDialog(QDialog):
 
             for ex, creds in data.items():
                 if ex in self.rows:
-                    self.rows[ex]["key_edit"].setText(creds.get("api_key", ""))
-                    self.rows[ex]["secret_edit"].setText(creds.get("api_secret", ""))
+                    row = self.rows[ex]
+                    row["key_edit"].setText(creds.get("api_key", ""))
+                    row["secret_edit"].setText(creds.get("api_secret", ""))
+                    if ex == "OKX" and row["passphrase_edit"]:
+                        row["passphrase_edit"].setText(creds.get("passphrase", ""))
                     self.update_status(ex, bool(creds.get("api_key")))
         except Exception:
             QMessageBox.critical(self, "Ошибка", "Неверный мастер-пароль или файл повреждён.")
@@ -209,16 +224,24 @@ class ApiKeysDialog(QDialog):
         key = base64.urlsafe_b64encode(kdf.derive(master_password.encode()))
         return Fernet(key)
 
-    # ==================== СОХРАНЕНИЕ И ПРОВЕРКА ====================
-    def save_key(self, exchange: str, key_edit: QLineEdit, secret_edit: QLineEdit):
+    def save_key(self, exchange: str, key_edit: QLineEdit, secret_edit: QLineEdit, passphrase_edit=None):
         if not self.master_key:
             return
+
         api_key = key_edit.text().strip()
         api_secret = secret_edit.text().strip()
+        passphrase = passphrase_edit.text().strip() if passphrase_edit else ""
 
-        if not api_key or not api_secret:
-            QMessageBox.warning(self, "Ошибка", "Оба поля (API Key и API Secret) должны быть заполнены.")
-            return
+        if exchange == "OKX":
+            if not api_key or not api_secret or not passphrase:
+                QMessageBox.warning(self, "Ошибка", 
+                                    "Для OKX необходимо заполнить все три поля:\n"
+                                    "• API Key\n• API Secret\n• Passphrase")
+                return
+        else:
+            if not api_key or not api_secret:
+                QMessageBox.warning(self, "Ошибка", "Оба поля (API Key и API Secret) должны быть заполнены.")
+                return
 
         data = {}
         if os.path.exists(self.encrypted_file):
@@ -230,7 +253,14 @@ class ApiKeysDialog(QDialog):
             except:
                 data = {}
 
-        data[exchange] = {"api_key": api_key, "api_secret": api_secret}
+        if exchange == "OKX":
+            data[exchange] = {
+                "api_key": api_key,
+                "api_secret": api_secret,
+                "passphrase": passphrase
+            }
+        else:
+            data[exchange] = {"api_key": api_key, "api_secret": api_secret}
 
         fernet = self.get_fernet(self.master_key)
         encrypted = fernet.encrypt(json.dumps(data).encode())
@@ -249,9 +279,8 @@ class ApiKeysDialog(QDialog):
             status.setStyleSheet("color: #4caf50; font-weight: bold;" if connected else "color: gray;")
 
     def test_connection(self, exchange: str):
-        """Реальная проверка соединения с биржей"""
+        """Проверка соединения с биржей"""
         try:
-            # Загружаем актуальные ключи из зашифрованного файла
             with open(self.encrypted_file, "rb") as f:
                 encrypted_data = f.read()
             fernet = self.get_fernet(self.master_key)
@@ -260,6 +289,7 @@ class ApiKeysDialog(QDialog):
             creds = data.get(exchange, {})
             api_key = creds.get("api_key")
             api_secret = creds.get("api_secret")
+            passphrase = creds.get("passphrase", "") if exchange == "OKX" else ""
 
             if not api_key or not api_secret:
                 QMessageBox.warning(self, "Ошибка", f"Для {exchange} не заданы API Key / Secret.")
@@ -269,22 +299,22 @@ class ApiKeysDialog(QDialog):
 
             if exchange == "Binance":
                 client = Spot(api_key=api_key, api_secret=api_secret)
-                client.ping()                          # Простая проверка
+                client.ping()
                 success = True
 
             elif exchange == "Bybit":
                 session = HTTP(api_key=api_key, api_secret=api_secret, testnet=False)
-                session.get_server_time()              # ← исправленный метод
+                session.get_server_time()
                 success = True
 
             elif exchange == "OKX":
                 account = AccountAPI.AccountAPI(
                     api_key=api_key,
                     api_secret_key=api_secret,
-                    passphrase="",          # OKX требует passphrase (можно оставить пустым)
-                    flag="0"                # 0 = live
+                    passphrase=passphrase,
+                    flag="0"
                 )
-                account.get_account_balance()   # private запрос
+                account.get_account_balance()   # простой приватный запрос
                 success = True
 
             if success:
@@ -296,8 +326,7 @@ class ApiKeysDialog(QDialog):
 
         except Exception as e:
             self.update_status(exchange, False)
-            QMessageBox.critical(self, "Ошибка соединения", 
-                               f"{exchange}: {str(e)}")
+            QMessageBox.critical(self, "Ошибка соединения", f"{exchange}: {str(e)}")
 
     def reset_all_keys(self):
         reply = QMessageBox.question(self, "Сброс ключей", 
@@ -310,6 +339,8 @@ class ApiKeysDialog(QDialog):
             for ex in self.rows:
                 self.rows[ex]["key_edit"].clear()
                 self.rows[ex]["secret_edit"].clear()
+                if self.rows[ex]["passphrase_edit"]:
+                    self.rows[ex]["passphrase_edit"].clear()
                 self.update_status(ex, False)
             QMessageBox.information(self, "Готово", "Все ключи сброшены.\nТеперь вы можете создать новый мастер-пароль.")
             self.close()

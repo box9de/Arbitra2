@@ -2048,6 +2048,14 @@
     "source": "Binance Public Coin Info"
   },
   {
+    "token": "LINEA",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "LINEA",
+    "contract_address": "0x1789e0043623282d5dcc7f213d703c6d8bafbb04",
+    "source": "Binance Public Coin Info"
+  },
+  {
     "token": "C98",
     "exchange": "Binance",
     "mode": "Spot",
@@ -2568,6 +2576,14 @@
     "source": "Binance Public Coin Info"
   },
   {
+    "token": "MTL",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "MTL",
+    "contract_address": "0xbcfc435d8f276585f6431fc1b9ee9a850b5c00a9",
+    "source": "Binance Public Coin Info"
+  },
+  {
     "token": "VET",
     "exchange": "Binance",
     "mode": "Spot",
@@ -2581,6 +2597,14 @@
     "mode": "Spot",
     "network": "BSC",
     "contract_address": "0x55d398326f99059ff775485246999027b3197955",
+    "source": "Binance Public Coin Info"
+  },
+  {
+    "token": "USDT",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "NEAR",
+    "contract_address": "usdt.tether-token.near",
     "source": "Binance Public Coin Info"
   },
   {
@@ -2893,6 +2917,14 @@
     "mode": "Spot",
     "network": "ETH",
     "contract_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "source": "Binance Public Coin Info"
+  },
+  {
+    "token": "USDC",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "NEAR",
+    "contract_address": "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
     "source": "Binance Public Coin Info"
   },
   {
@@ -5878,5 +5910,2917 @@
     "network": "ETH",
     "contract_address": "0xddb3422497e61e13543bea06989c0789117555c5",
     "source": "Binance Public Coin Info"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "PLASMA",
+    "contract_address": "0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER (0)",
+    "contract_address": "0x779ded0c9e1022225f8e0630b35a9b54be713736",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "0x1E4a5963aBFD975d8c9021ce480b42188849D41d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "APTOS",
+    "contract_address": "0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM (0)",
+    "contract_address": "0x01bff41798a0bcf287b996046ca68b395dbc1071",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "MONAD (0)",
+    "contract_address": "0xe7cd86e13AC4309349F30B3435a9d337750fC82D",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "UNICHAIN (0)",
+    "contract_address": "0x9151434b16b9763660705744891fa906f660ecc5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM",
+    "contract_address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "POLYGON",
+    "contract_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "AVALANCHE CCHAIN",
+    "contract_address": "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TRC20",
+    "contract_address": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OKTC",
+    "contract_address": "0x382bb369d343125bfb2117af9c149795c6c65c50",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BERACHAIN (0)",
+    "contract_address": "0x779Ded0c9e1022225f8E0630b35a9b54bE713736",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "0x4ae46a509f6b1d9056937ba4500cb143933d2dc8",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xe343167631d89B6Ffc58B88d6b7fB0228795491D",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BITCOIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x54e4622dc504176b3bb432dccaf504569699a7ff",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "CtzPWv73Sn1dMGVU3ZtLv9yWSyUAanBni19YWDaznnkn",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "0xb7c00000bcdeef966b20b3d884b98e64d2b06b4f",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "APTOS",
+    "contract_address": "0x81214a80d82035a190fcb76b6ff3c0145161c3a9f33d137f2bbaee4cfec8a387",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LIGHTNING",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SUI",
+    "contract_address": "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ZKSYNC ERA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER (W)",
+    "contract_address": "0x5a77f1443d16ee5761d310e38b62f77f726bc71c",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM",
+    "contract_address": " ",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "0xe7b000003a45145decf8a28fc755ad5ec5ea025a",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "STARKNET",
+    "contract_address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LINEA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0xef71ca2ee68f45b9ad6f72fbdb33d707b872315c",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "UNICHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XAUT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x68749665ff8d2d112fa859aa293f07a622782f38",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "1INCH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x111111111117dc0aa78b770fa6a738034120c302",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "2Z",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "J6pQQ3FAcJQeWPPGppWRb4nM8jU3wLyYbRrLh7feMfvd",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "A",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "VAULTA",
+    "contract_address": "core.vaulta",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AAVE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ACE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ENDURANCE SMART CHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ACH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xed04915c23f00a313a544955524eb7dbd823143d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ACT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "GJAFwWjJ3vnTsrQVabjBVK2TYB1YtRCQXRDfDgUnpump",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ADA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CARDANO",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AERGO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x91af0fbb28aba7e31403cb457106ce79397fd4e6",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AEVO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xb528edbef013aff855ac3c50b381f253af13b997",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AGLD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x32353a6c91143bfd6c7d363b546e62a9a2489a20",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AIXBT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x4f9fd6be4a90f2620860d680c0d4d5fb53d1a825",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ALGO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ALGORAND",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ALLO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x8408D45b61f5823298F19a09B53b7339c0280489",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ANIME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "0x37a645648df29205c6261289983fb04ecd70b4b3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ANIME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x4dc26fc5854e7648a064a4abd590bbe71724c277",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "APE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x4d224452801aced8b2f0aebe155379bb5d594381",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "API3",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x0b38210ea11411557c13457d4da7dc6ea731b88a",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "APT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "APTOS",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARWEAVE",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ARB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xb50721bcf8d664c30412cfbc6cf7a15145234ad1",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ARB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ARG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ 2.0 CHAIN",
+    "contract_address": "0xd34625c1c812439229ef53e06f22053249d011f5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ARKM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6e2a43be0b1d33b726f0ca3b8de60b3482b8b050",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ASP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "DJ7vji2BU7RjNgktPAKN4L42CiXTFHEt4Eeeyr5FiTmy",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ASTER",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0x000ae314e2a2172a039b26378814c252734f556a",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ASTR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ASTAR",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ATH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xbe0ed4138121ecfc5c0e56b40517da27e6c5226b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ATOM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "COSMOS",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AUCTION",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xa9b1eb5908cfc3cdf91f9b8b3a74108598009096",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AVAX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "AVALANCHE XCHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AVAX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "AVALANCHE CCHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AVNT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x696f9436b67233384889472cd7cd58a6fb5df4f1",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "AXS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BABY",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BABYLON",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BABYDOGE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0xc748673057861a797275cd8a068abb95a902e8de",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BABYDOGE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OKTC",
+    "contract_address": "0x97513e975a7fa9072c72c92d8000b0db90b163c5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BABYDOGE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "0x8368e77bc6c8d20c954d8b94f8f42ebb04a35aea",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BANANA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x38e68a37e401f7271568cecaac63c6b1e19130b4",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BAND",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xba11d00c5f74255f56a5e366f4f77f5a186d7f55",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BARD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xf0db65d17e30a966c2ae6a21f6bba71cea6e9754",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BASED",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x4f2b33840227ddd0e28da8d4185d6fa07adfed87",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BAT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BCH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x18d103b7066aeedb6005b78a462ef9027329b1ea",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BCH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BITCOINCASH",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BERA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BERACHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BICO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xf17e65822b568b3903685a7c9f496cf7656cc6c2",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BIGTIME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x64bc2ca1be492be7185faa2c8835d9b824c8a194",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BIO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xcb1592591996765ec0efc1f92599a19767ee5ffa",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BLUR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x5283d291dbcf85356a21ba090e6db59121208b44",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BNB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BNT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BOME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BONK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "BREV",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x086F405146Ce90135750Bbec9A063a8B20A8bfFb",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CAT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0x6894cde390a3f51155ea41ed24a33a4827d3063d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CATI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQD-cvR0Nz6XAyRBvbhz-abTrRC6sI5tvHvvpeQraV9UAAD7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CANTON NETWORK",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CEEK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0xe0f94ac5462997d2bc57287ac3a3ae4c31345d66",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CELO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CELO-CELO",
+    "contract_address": " ",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CELO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TOKEN",
+    "contract_address": "0x471ece3750da237f93b8e339c536989b8978a438",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CELR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x4f9254c83eb525f9fcf346490bbb3ed28a81c667",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CETUS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SUI",
+    "contract_address": "0x06864a6f921804860930db6ddbe2e16acdf8504495ea7481637a1c8b9a8fe54b::cetus::CETUS",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CFG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xcccccccccc33d538dbc2ee4feab0a7a1ff4e8a94",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CFX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "_EVM",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CFX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CONFLUX",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CHZ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x3506424f91fd33084466f402d5d97f05f8e3b4af",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CHZ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ CHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CITY",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ 2.0 CHAIN",
+    "contract_address": "0x6401b29f40a02578ae44241560625232a01b3f79",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "COMP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CORE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CORE-CORE",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CRO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CRYPTO",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CRV",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CRV",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "POLYGON",
+    "contract_address": "0x172370d5cd63279efa6d502dab29171933a610af",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CSPR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CASPER",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xa3ee21c306a700e682abcdfe9baa6a08f3820419",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CVC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "CVX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DASH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "DIGITAL CASH",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DEGEN",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x4ed4e862860bed51a9570b96d89af5e1b0efefed",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DGB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "DIGIBYTE",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DOGE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "DOGECOIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DOGS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQCvxJy4eG8hyHBFsZ7eePxrRsUQSFE_jpptRAYBmcG_DOGS",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DOOD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "DvjbEsdca43oQcw2h3HW1CT7N3x5vRcr3QrvTUHnXvgV",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DORA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "DORA VOTA MAINNET",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DOT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ASSETHUB POLKADOT",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DOT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0xabc732f6f69a519f6d508434481376b6221eb7d5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DUCK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQDWXjnVWheFemaAaFn-Cp4nDehvGllrXOZ8wqHm8sDEwn_c",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "DYDX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "DYDX-DYDX",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "EGLD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ELROND",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "EIGEN",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xec53bf9167f50cdeb3ae105f56099aaab9061f83",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ELF",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "A",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ENA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x57e114b691db790c35207b2e685d4a43181e6061",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ENJ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ENJIN RELAY CHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ENS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xc18360217d8f7ab5e7c516566761ea12ce7f9d72",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ETHEREUM CLASSIC",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x99970778e2715bbc9cf8fb83d10dcbc2d2d551a3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETHFI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ETHW",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ETHEREUMPOW",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FET",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xaea46a60368a7bd060eec7df8cba43b7ef41ad85",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FIL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "FEVM",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FIL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "FILECOIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FIL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x3f8969be2fc0770dcc174968e4b4ff146e0acdaf",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FLOKI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0xfb5b838b6cfeedc2873ab27866079ac55363d37e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FLOW",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "FLOW-FLOW",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FLR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "FLARE",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FLUID",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6f40d4a6237c257fff2db00fa0510deeecd303eb",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FOGO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "FOGO",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "FTM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "FANTOM",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "G",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x9c7beba8f6ef6643abd725e45a4e8387ef260649",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "G",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "RAVITY ALPHA MAINNET",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GALA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xd1d2eb1b1e90b638588728b4130137d262c87cae",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GALFT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ 2.0 CHAIN",
+    "contract_address": "0x6dab8fe8e5d425f2eb063aae58540aa04e273e0d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GAS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "N3",
+    "contract_address": "0xd2a4cff31913016155e38e474a2c06d08be276cf",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GLM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x7dd9c5cba05e151c895fde1cf355c9a1d5da6429",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GMT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GMT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "POLYGON",
+    "contract_address": "0x714db550b574b3e927af3d93e26127d15721d4c2",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GMX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GOAT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "CzLSujWBLFsSjncfkh59rUFqvafWcY5tzedWJSuypump",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GODS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xccc8cb5229b0ac8069c51fd58367fd1e622afd97",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "GRT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xc944e90c64b2c07662a292be6244bdf05cda44a7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "HBAR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "HEDERA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "HMSTR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQAJ8uWd7EBqsmpSWaRdf_I-8R8-XHwh3gsNKhy-UrdrPcUo",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "HUMA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "HUMA1821qVDKta3u2ovmfDQeW2fSQouSKE8fkF44wvGw",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "HYPE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "HYPEREVM",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ICP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "DFINITY",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ICX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ICON",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ID",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x2dff88a56767223a5529ea5960da7a3f5f766406",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ILV",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x767fe9edc9e0df98e07454847909b5e959d7ca0e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "IMX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xf57e7e7c23978c3caec3c3548e3d615c346e79ff",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "INJ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "INJ-INJ",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "IOST",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "IOST-IOST",
+    "contract_address": "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "IOTA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "STARDUST",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "IP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "STORY",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "J",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "Jambjx1oJoZNBZiqbiF9TqgatEZPdyfvYa9WVsKNzUh",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "JITOSOL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "JOE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "AVALANCHE CCHAIN",
+    "contract_address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "JTO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "JUP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KAIA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KLAYTN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KAITO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x98d0baa52b2d063e780de12f615f963fe8537553",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KAT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KATANA",
+    "contract_address": "0x7F1f4b4b29f5058fA32CC7a97141b8D7e5ABDC2d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KITE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x904567252d8f48555b7447c67dca23f0372e16be",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KMNO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KNC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xdefa4e8a7bcba345f687a2f1456f5edd9ce97202",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "KSM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ASSETHUB KUSAMA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LAT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "PLATON",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LAYER",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "LAYER4xPpTCb3QL8S9u41EAhAX7mhBn8Q6xMTwY2Yzc",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LBR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xed1167b6dc64e8a366db86f2e952a482d0981ebd",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LDO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x5a98fcbea516cf06857215779fd812ca3bef1b32",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LEO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x2af5d2ad76741191d15dfe7bf6ac92d4bd912ca3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LINEA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LINEA",
+    "contract_address": "0x1789e0043623282d5dcc7f213d703c6d8bafbb04",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LINK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LINK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0xbeb67de6cc5af652b2d9b0235750ed70f5a2cb0d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LIT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x232ce3bd40fcd6f80f3d55a522d03f25df784ee2",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LPT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x58b6a8a3302369daec383334672404ee733ab239",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LQTY",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LRC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LSK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LISK",
+    "contract_address": "0xac485391EB2d7D88253a7F1eF18C37f4242D1A24",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LITECOIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0xfa520efc34c81bfc1e3dd48b7fe9ff326049f986",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "LUNA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TERRA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MAGIC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "0x539bde0d7dbd336b79148aa742883198bbf60342",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MAJOR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQCuPm01HldiduQ55xaBF_1kaW_WAUy5DHey8suqzU_MAJOR",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MANA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MASK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x69af81e73a73b40adf4f3d4223cd9b1ece623074",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MAX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xb7109df1a93f8fe2b8162c6207c9b846c1c68090",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MAX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "POLYGON",
+    "contract_address": "0xbed0b9240bdbcc8e33f66d2ca650a5ef60a5bab0",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "MEFNBXixkEbait3xn9bkm8WsJzXtVsaJEn4c8Sam21u",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MEME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xb131f4a55907b10d1f0a50d8ab8fa09ec342cd74",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MENGO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ 2.0 CHAIN",
+    "contract_address": "0xd1723eb9e7c6ee7c7e2d421b2758dc0f2166eddc",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MERL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "IN NETWORK",
+    "contract_address": "0x5c46bFF4B38dc1EAE09C5BAc65872a1D8bc87378",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MET",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "METvsvVRapdj9cFLzq4Tr43xK4tAjQfwX76z3n6mWQL",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "METIS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "METIS (TOKEN TRANSFER)",
+    "contract_address": "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "METIS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "METIS",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MEW",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MINA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "MINA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MMT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SUI",
+    "contract_address": "0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MON",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "MONAD",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MOODENG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MORPHO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x58d97b57bb95320f9a05dc918aef65434969c2b2",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MOVE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x3073f7aaa4db83f95e9fff17424f71d4751a3073",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "MXC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LAYER 3",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NAVX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SUI",
+    "contract_address": "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NEAR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "NEAR-NEAR",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NEIRO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x812ba41e071c7b7fa4ebcfb62df5f45f6fa853ee",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NEO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "N3",
+    "contract_address": "0xef4073a0f2b305a38ec4050e4d3d28bc40ea63f5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NFT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TRC20",
+    "contract_address": "TFczxzPhnThNSqr5by8tvxsdCFRRz6cPNq",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NIGHT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CARDANO",
+    "contract_address": "4e49474854:0691b2fecca1ac4f53cb6dfb00b7013e561d1f34403b957cbb5af1fa",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NMR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x1776e1f26f98b1a5df9cd347953a26dd3cb46671",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "NOT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON",
+    "contract_address": "EQAvlWFDxGF2lXm67y4yzC17wYKD9A0guwPkMs1gOsM__NOT",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OFC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x752c5a95d202972e124390f30a50154409d3c858",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OKB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x75231f58b43240c9718dd58b4967c5114342a86c",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OKB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OKTC",
+    "contract_address": "0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OKB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OKT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "C",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x1f57da732a77636d913c9a75d685b26cc85dcc3a",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OMI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xed35af169af46a02ee13b9d79eb57d6d68c1749e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ONDO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ONE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "HARMONY",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ONT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ONTOLOGY",
+    "contract_address": "0100000000000000000000000000000000000000",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "OP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM",
+    "contract_address": "0x4200000000000000000000000000000000000042",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ORBS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ORDI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BRC20",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ORDI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "MERLIN NETWORK",
+    "contract_address": "0x7dcb50b2180BC896Da1200D2726a88AF5D2cBB5A",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PARTI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0x59264f02D301281f3393e1385c0aEFd446Eb0F00",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PARTI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x59264f02D301281f3393e1385c0aEFd446Eb0F00",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PAXG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x45804880de22913dafe09f4980848ece6ecbaf78",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PENDLE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x808507121b80c02388fad14726482e061b8da827",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PENGU",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PEOPLE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x7a58c0be72be218b41c608b7fe7c5bb630736c71",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PEPE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PHA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6c5ba91642f10282b576d91922ae6448c9d52f4e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "PI-PI",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PIXEL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "RONIN",
+    "contract_address": "0x7eae20d11ef8c779433eb24503def900b9d28ad7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PNUT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "POL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x455e53cbb86018ac2b8092fdcd39d8444affc3f6",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "POL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "POLYGON",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "POR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ 2.0 CHAIN",
+    "contract_address": "0xffad7930b474d45933c93b83a2802204b8787129",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PRCL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PROMPT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x28d38df637db75533bd3f71426f3410a82041544",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PROVE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6bef15d938d4e72056ac92ea4bdd0d76b1c4ad29",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PUMP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PYTH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "PYUSD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "QTUM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "QUANTUM",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RAY",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RENDER",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RESOLV",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x259338656198ec7a76c729514d3cb45dfbf768a1",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ROBO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x32b4d049fE4c888D2b92eEcaf729F44DF6B1F36E",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RON",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "RONIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RPL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xd33526068d116ce69f19a9ee46f0bd304f21a51f",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RSR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "RVN",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "RAVENCOIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "S",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ONIC",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SAFE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x5afe3855358e112b5647b952709e6165e1c1eeee",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SAHARA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xFDFfB411C4A70AA7C95D5C981a6Fb4Da867e1111",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SAND",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x3845badade8e6dff049820680d1f14bd3903a5d0",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SATS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BRC20",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SATS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "MERLIN NETWORK",
+    "contract_address": "0x4dbe39D987665d0CB9F921B50B2673346b87cAfA",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SCR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SCROLL",
+    "contract_address": "0xd29687c813d741e2f938f4ac377128810e217b1b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x30d20208d987713f46dfd34ef128bb16c404d10f",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SEI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SEI-SEI",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SENT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x56a3ba04e95d34268a19b2a4474dc979babdaf76",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SHIB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SHIB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0xaa27badaa3c9ec9081b8f6c9cdd2bf375f143780",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SKL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x00c83aecc790e8a4453e5dd3b0b4b3680501a7a7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SKY",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x56072c95faa701256059aa122697b133aded9279",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SLP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xcc8fa225d80b9c7d42f96e9570156c65d6caaa25",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SNT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SNX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SOL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "X LAYER",
+    "contract_address": "0x505000008de8748dbd4422ff4687a4fc9beba15b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SOL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SONIC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "SonicxvLud67EceaEzCLRnMTBqzYUUYNr93DBkBdDES",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SOPH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOPHON",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SPACE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x87acFA3fD7A6e0d48677D070644D76905C2bDC00",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SPK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xc20059e0317DE91738d13af027DfC4a50781b066",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SPURS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ CHAIN",
+    "contract_address": "0x93d84ff2c5f5a5a3d7291b11af97679e75eeac92",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SRM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SSV",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x9d65ff81a3c488d585bbfb0bfe3c7707c7917f54",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "STETH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "STORJ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "STRK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "STARKNET",
+    "contract_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "STX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "LSTACKS",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SUI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SUI-SUI",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SUSHI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SUSHI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x2218e0d5e0173769f5b4939a3ae423f7e5e4eab7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "SWFTC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x0bb217e40f8a5cb79adf04e1aab60e5abd0dfc1e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "T",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xcdf7028ceab81fa0c6971208e83fa7872994bee5",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "THETA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "THETA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TIA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CELESTIA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TNSR",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TON",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TON-TON",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TOSHI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0xac1bd2486aaf3b5c0fc3fd868558b082a531b2b4",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TRA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHILIZ 2.0 CHAIN",
+    "contract_address": "0x304193f18f3b34647ae1f549fc825a7e50267c51",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TRB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x88df592f8eb5d7bd38bfef7deb0fbc02cf3778a0",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TRUMP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TRX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x00505505a7576d6734704fabb16f41924e3e384b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TRX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TRC20",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "TURBO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xa35923162c49cf95e6bf26623385eb431ad920d3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "UMA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x04fa0d235c4abf4bcf4787af4cf447de572ef828",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "UNI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0x59d226bb0a4d74274d4354ebb6a0e1a1aa5175b6",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "UNI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USAT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x07041776f5007ACa2A54844F50503a18A72A8b68",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "USDS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xdc035d45d973e3ec169d2276ddab16f1e407384f",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "VELO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "STELLAR LUMENS",
+    "contract_address": "VELO:GDM4RQUQQUVSKQA7S6EM7XBZP3FCGH4Q7CL6TABQ7B2BEJ5ERARM2M5M",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "VELODROME",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM (V2)",
+    "contract_address": "0x9560e827aF36c94D2Ac33a39bCE1Fe78631088Db",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "VINE",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "VIRTUAL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "W",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WAXP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "WAX",
+    "contract_address": "eosio.token",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WCT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM",
+    "contract_address": "0xef4461891dfb3ac8572ccf7c794664a8dd927945",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WET",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "WETZjtprkDMCcUxPi9PfWnowMRZkiGGHDb9rABuRZ2U",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WIF",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WIN",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TRC20",
+    "contract_address": "TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WLD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "OPTIMISM",
+    "contract_address": "0xdc6ff44d5d932cbd77b52e5612ba0529dc6226f1",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WLD",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x163f8c2467924be0ae7b5347228cabf260318753",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WLFI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "WLFinEv6ypjkczcS83FZqFpgFZYwQXutRbxGe7oC16g",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WLFI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xda5e1988097297dcdc1f90d4dfe7909e847cbef6",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WOO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x4691937a7508860f876c9c0a2a617e7d9e945d4b",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "WSM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0x62694d43ccb9b64e76e38385d15e325c7712a735",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XCH",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "CHIA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XLM",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "STELLAR LUMENS",
+    "contract_address": "native:GDN4U3BDFVMK74IJ46GXEN5ZDRA5QIJQF6TM3NBJIG4IQW2RDGYXSMRN",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XPL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "PLASMA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XRP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "KOKTC",
+    "contract_address": "0xa715f624eb32c6c960b0e044b10cde585d5f5984",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XRP",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "XRP-XRP",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "XTZ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "TEZOS",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "YB",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x01791F726B4103694969820be083196cC7c045fF",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "YFI",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "YGG",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x25f8087ead173b73d6e8b84329989a8eea16cf73",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZAMA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xa12cc123ba206d4031d1c7f6223d1c2ec249f4f3",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZBCN",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "ZBCNpuD7YMXzTHB2fhGkGi78MNsHGLRXUhRewNRm9RU",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZEC",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ZCASH",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZEN",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0xf43eb8de897fbc7f2502483b2bef7bb9ea179229",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZENT",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xdbb7a34bf10169d6d2d0d02a6cbb436cf4381bfa",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZETA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ZETACHAIN",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZEUS",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "SOLANA",
+    "contract_address": "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZIL",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ZILLIQA",
+    "contract_address": "",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZK",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ZKSYNC ERA",
+    "contract_address": "0x5a7d6b2f92c77fad6ccabd7ee0624e64907eaf3e",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZKJ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BSC",
+    "contract_address": "0xc71b5f631354be6853efe9c3ab6b9590f8302e81",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZKJ",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xc71b5f631354be6853efe9c3ab6b9590f8302e81",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZORA",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "BASE",
+    "contract_address": "0x1111111111166b7FE7bd91427724B487980aFc69",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZRO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0x6985884c4392d348587b19cb9eaaf157f13271cd",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZRO",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ARBITRUM ONE",
+    "contract_address": "0x6985884c4392d348587b19cb9eaaf157f13271cd",
+    "source": "OKX Public Currencies"
+  },
+  {
+    "token": "ZRX",
+    "exchange": "OKX",
+    "mode": "Spot",
+    "network": "ERC20",
+    "contract_address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "source": "OKX Public Currencies"
   }
 ]

@@ -341,3 +341,175 @@ class ContractFetcher:
         self.registry._save_to_file()
         print(f"[ContractFetcher] ИТОГО добавлено/обновлено {total} записей из Spot бирж")
         return total
+    
+    # ====================== FUTURES С БИРЖ ======================
+    def fetch_binance_futures(self, master_password: str):
+        """Импорт фьючерсов Binance (PERPETUAL + QUARTERLY) — публичный endpoint"""
+        added = 0
+        try:
+            print(f"[Binance Futures] Запрашиваем список фьючерсов...")
+
+            import requests
+            resp = requests.get("https://fapi.binance.com/fapi/v1/exchangeInfo", timeout=15)
+            print(f"[DEBUG Binance Futures] Status code: {resp.status_code}")
+
+            if resp.status_code != 200:
+                print(f"[DEBUG Binance Futures] Response: {resp.text[:300]}...")
+                return 0
+
+            data = resp.json()
+            symbols = data.get('symbols', [])
+
+            for s in symbols:
+                if s.get('status') != 'TRADING':
+                    continue
+                base = s.get('baseAsset')
+                symbol = s.get('symbol')
+                c_type = s.get('contractType', 'PERPETUAL')
+
+                token_data = {
+                    "token": base,
+                    "exchange": "Binance",
+                    "mode": "Futures",
+                    "network": "",
+                    "contract_address": "",
+                    "futures_symbol": symbol,
+                    "contract_type": c_type,
+                    "source": "Binance Futures API"
+                }
+                self.registry.add_token_full(token_data)
+                added += 1
+
+            print(f"[Binance Futures] Итого записей: {added}")
+            return added
+        except Exception as e:
+            print(f"[Binance Futures] Критическая ошибка: {e}")
+            return 0
+
+    def fetch_bybit_futures(self, master_password: str):
+        """Импорт фьючерсов Bybit (linear perpetual)"""
+        added = 0
+        try:
+            print(f"[Bybit Futures] Запрашиваем список фьючерсов...")
+            api_key, api_secret = self._load_keys(master_password, "Bybit")
+
+            from pybit.unified_trading import HTTP
+            session = HTTP(api_key=api_key, api_secret=api_secret, testnet=False)
+
+            data = session.get_instruments_info(category="linear")
+            for s in data.get('result', {}).get('list', []):
+                base = s.get('baseCoin')
+                symbol = s.get('symbol')
+
+                token_data = {
+                    "token": base,
+                    "exchange": "Bybit",
+                    "mode": "Futures",
+                    "network": "",
+                    "contract_address": "",
+                    "futures_symbol": symbol,
+                    "contract_type": "PERPETUAL",
+                    "source": "Bybit Futures API"
+                }
+                self.registry.add_token_full(token_data)
+                added += 1
+
+            print(f"[Bybit Futures] Итого записей: {added}")
+            return added
+        except Exception as e:
+            print(f"[Bybit Futures] Критическая ошибка: {e}")
+            return 0
+
+    def fetch_okx_futures(self, master_password: str):
+        """Импорт фьючерсов OKX (SWAP perpetual) — signed запрос"""
+        added = 0
+        try:
+            print(f"[OKX Futures] Запрашиваем список фьючерсов...")
+
+            config = self._load_encrypted_config(master_password)
+            okx_data = config.get('OKX', {})
+            api_key = okx_data.get('api_key', '') or okx_data.get('key', '')
+            api_secret = okx_data.get('api_secret', '') or okx_data.get('secret', '')
+            passphrase = okx_data.get('passphrase', '') or okx_data.get('pass', '')
+
+            print(f"[DEBUG OKX Futures] Key: {len(api_key)} | Secret: {len(api_secret)} | Passphrase: {len(passphrase)}")
+
+            import requests
+            import hmac
+            import hashlib
+            import base64
+            from datetime import datetime
+
+            url = "https://www.okx.com/api/v5/public/instruments"
+            timestamp = datetime.utcnow().isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+            method = "GET"
+            request_path = "/api/v5/public/instruments?instType=SWAP"
+
+            pre_hash = timestamp + method + request_path
+            signature = base64.b64encode(
+                hmac.new(api_secret.encode('utf-8'), pre_hash.encode('utf-8'), hashlib.sha256).digest()
+            ).decode('utf-8')
+
+            headers = {
+                'OK-ACCESS-KEY': api_key,
+                'OK-ACCESS-SIGN': signature,
+                'OK-ACCESS-TIMESTAMP': timestamp,
+                'OK-ACCESS-PASSPHRASE': passphrase,
+                'Content-Type': 'application/json'
+            }
+
+            resp = requests.get(f"{url}?instType=SWAP", headers=headers, timeout=15)
+            print(f"[DEBUG OKX Futures] Status code: {resp.status_code}")
+
+            if resp.status_code != 200:
+                print(f"[DEBUG OKX Futures] Response: {resp.text[:300]}...")
+                return 0
+
+            instruments = resp.json().get('data', [])
+            print(f"[DEBUG OKX Futures] Найдено инструментов: {len(instruments)}")
+
+            for s in instruments:
+                # Правильное извлечение base-токена
+                base = s.get('baseCcy') or s.get('uly', '').split('-')[0] or s.get('instId', '').split('-')[0]
+                if not base:
+                    continue
+
+                symbol = s.get('instId')
+
+                token_data = {
+                    "token": base.upper(),
+                    "exchange": "OKX",
+                    "mode": "Futures",
+                    "network": "",
+                    "contract_address": "",
+                    "futures_symbol": symbol,
+                    "contract_type": "PERPETUAL",
+                    "source": "OKX Futures API"
+                }
+                self.registry.add_token_full(token_data)
+                added += 1
+
+            print(f"[OKX Futures] Итого записей: {added}")
+            return added
+
+        except Exception as e:
+            print(f"[OKX Futures] Критическая ошибка: {e}")
+            return 0
+    
+    def enrich_futures_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
+        """Главный метод — обогащение фьючерсами со всех бирж"""
+        if not master_password:
+            print("[ContractFetcher] Ошибка: мастер-пароль не передан")
+            return 0
+
+        total = 0
+
+        if binance:
+            total += self.fetch_binance_futures(master_password)
+        if bybit:
+            total += self.fetch_bybit_futures(master_password)
+        if okx:
+            total += self.fetch_okx_futures(master_password)
+
+        print(f"[ContractFetcher] ИТОГО добавлено/обновлено {total} записей из Futures бирж")
+        return total

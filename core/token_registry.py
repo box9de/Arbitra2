@@ -19,38 +19,108 @@ class TokenRegistry:
         return cls._instance
 
     def add_token_full(self, token_data: dict):
-        """Жёсткая дедупликация по полному ключу:
-           token + exchange + mode + network + contract_address
-           Это позволяет хранить разные сети и адреса одного токена"""
+        """Добавляет/обновляет запись + нормализует название сети (полная карта)"""
         
-        key = (
-            token_data.get("token", ""),
-            token_data.get("exchange", ""),
-            token_data.get("mode", ""),
-            token_data.get("network", ""),
-            token_data.get("contract_address", "")
-        )
+        # === ПОЛНАЯ КАРТА НОРМАЛИЗАЦИИ СЕТЕЙ ===
+        network_map = {
+            # Основные
+            "SOL": "SOLANA", "SOLANA": "SOLANA",
+            "ETH": "ETH", "ERC20": "ETH", "ERC-20": "ETH", "ER20": "ETH", "ETHER": "ETH",
+            "BERA": "BERACHAIN", "BERACHAIN": "BERACHAIN",
+            "ARBI": "ARBITRUM", "ARB": "ARBITRUM", "ARBITRUM": "ARBITRUM", "ARBITRUM ONE": "ARBITRUM",
+            "OP": "OPTIMISM", "OPT": "OPTIMISM", "OPTIMISM": "OPTIMISM",
+            "BASE": "BASE",
+            "BSC": "BSC",
+            "MATIC": "POLYGON", "POLYGON": "POLYGON",
+            "AVAX": "AVALANCHE", "CAVAX": "AVALANCHE", "AVALANCHE": "AVALANCHE",
+            "KLAY": "KLAYTN", "KLAYTN": "KLAYTN",
+            "TON": "TON",
+            "TRX": "TRON", "TRON": "TRON",
+            "XRP": "XRP",
+            "ADA": "CARDANO",
+            "DOT": "POLKADOT",
+            "NEAR": "NEAR",
+            "SUI": "SUI",
+            "ZKSYNC": "ZKSYNC ERA", "ZK": "ZKSYNC ERA", "ZKSYNC ERA": "ZKSYNC ERA",
+            "MANTLE": "MANTLE",
+            "LINEA": "LINEA",
+            "SCROLL": "SCROLL",
+            "CHILIZ": "CHILIZ", "CHZ2": "CHILIZ", "CHILIZ CHAIN": "CHILIZ", "CHILIZ 2.0 CHAIN": "CHILIZ",
+            "EOS": "EOS", "VAULTA": "EOS", "CORE.VAULTA": "EOS",
+            "ENDURANCE": "ENDURANCE", "ENDURANCE SMART CHAIN": "ENDURANCE",
+            "KOKTC": "KOKTC",
+            "MERLIN": "MERLIN", "MERLIN NETWORK": "MERLIN",
+            "STARKNET": "STARKNET",
+            "HYPEREVM": "HYPEREVM",
+            "MONAD": "MONAD",
+            "RONIN": "RONIN",
+            "PLASMA": "PLASMA",
+            "ZIRCUIT": "ZIRCUIT",
+            "KROMA": "KROMA",
+            # Добавляй сюда новые по мере появления
+        }
 
-        for existing in self.tokens:
-            existing_key = (
-                existing.get("token", ""),
-                existing.get("exchange", ""),
-                existing.get("mode", ""),
-                existing.get("network", ""),
-                existing.get("contract_address", "")
+        # Применяем нормализацию
+        raw_network = str(token_data.get("network", "")).strip().upper()
+        token_data["network"] = network_map.get(raw_network, raw_network)
+
+        # Нормализация Futures-полей
+        token_data.setdefault("futures_symbol", None)
+        token_data.setdefault("contract_type", None)
+        token_data.setdefault("contract_address", "")
+
+        # Ключ дедупликации
+        if token_data.get("mode") == "Futures":
+            key = (
+                token_data.get("token", ""),
+                token_data.get("exchange", ""),
+                token_data.get("mode", ""),
+                token_data.get("futures_symbol") or ""
             )
-            if existing_key == key:
-                existing.update(token_data)   # обновляем данные, если запись уже есть
+        else:
+            key = (
+                token_data.get("token", ""),
+                token_data.get("exchange", ""),
+                token_data.get("mode", ""),
+                token_data.get("network", ""),
+                token_data.get("contract_address", "")
+            )
+
+        # Поиск и обновление
+        for existing in self.tokens:
+            if existing.get("mode") == "Futures":
+                ex_key = (
+                    existing.get("token", ""),
+                    existing.get("exchange", ""),
+                    existing.get("mode", ""),
+                    existing.get("futures_symbol") or ""
+                )
+            else:
+                ex_key = (
+                    existing.get("token", ""),
+                    existing.get("exchange", ""),
+                    existing.get("mode", ""),
+                    existing.get("network", ""),
+                    existing.get("contract_address", "")
+                )
+            if ex_key == key:
+                for k, v in token_data.items():
+                    if v is not None and v != "":
+                        existing[k] = v
                 self._save_to_file()
                 return
 
-        # Если такой комбинации нет — добавляем новую строку
-        self.tokens.append(token_data)
+        # Новая запись
+        self.tokens.append(token_data.copy())
         self._save_to_file()
 
     def get_all_tokens(self):
         """Возвращает все записи для глобального реестра"""
         return self.tokens
+    
+    def __init__(self):
+        self.tokens = []                    # список всех записей
+        self._load_from_file()
 
     def _load_from_file(self):
         path = "data/token_registry.json"
@@ -62,7 +132,7 @@ class TokenRegistry:
                 self.tokens = []
         else:
             self.tokens = []
-
+    
     def _save_to_file(self):
         os.makedirs("data", exist_ok=True)
         with open("data/token_registry.json", 'w', encoding='utf-8') as f:
@@ -191,6 +261,25 @@ class TokenRegistry:
         """Полный сброс реестра"""
         self.tokens = []
         self._save_to_file()
+
+    def enrich_futures_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
+        """Обёртка для вызова из GUI — полностью аналогично enrich_spot_from_exchanges"""
+        from core.contract_fetcher import ContractFetcher
+
+        if not master_password:
+            print("[TokenRegistry] Ошибка: мастер-пароль не передан")
+            return 0
+
+        fetcher = ContractFetcher()
+        total = fetcher.enrich_futures_from_exchanges(
+            binance=binance, 
+            bybit=bybit, 
+            okx=okx, 
+            master_password=master_password
+        )
+
+        self._save_to_file()
+        return total
 
 
 # Глобальный экземпляр

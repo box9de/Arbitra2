@@ -19,7 +19,8 @@ class TokenRegistry:
         return cls._instance
 
     def add_token_full(self, token_data: dict):
-        """Добавляет/обновляет запись + нормализует название сети (полная карта)"""
+        """Добавляет/обновляет запись с поддержкой spot_pairs и futures_pairs"""
+        # Нормализация сети (оставляем как было)
         
         # === ПОЛНАЯ КАРТА НОРМАЛИЗАЦИИ СЕТЕЙ ===
         network_map = {
@@ -64,49 +65,41 @@ class TokenRegistry:
         raw_network = str(token_data.get("network", "")).strip().upper()
         token_data["network"] = network_map.get(raw_network, raw_network)
 
-        # Нормализация Futures-полей
-        token_data.setdefault("futures_symbol", None)
-        token_data.setdefault("contract_type", None)
-        token_data.setdefault("contract_address", "")
-
         # Ключ дедупликации
         if token_data.get("mode") == "Futures":
             key = (
-                token_data.get("token", ""),
+                token_data.get("token", "").upper(),
                 token_data.get("exchange", ""),
                 token_data.get("mode", ""),
-                token_data.get("futures_symbol") or ""
+                token_data.get("futures_symbol", "")
             )
         else:
             key = (
-                token_data.get("token", ""),
+                token_data.get("token", "").upper(),
                 token_data.get("exchange", ""),
                 token_data.get("mode", ""),
                 token_data.get("network", ""),
                 token_data.get("contract_address", "")
             )
 
-        # Поиск и обновление
+        # Поиск существующей записи
         for existing in self.tokens:
-            if existing.get("mode") == "Futures":
-                ex_key = (
-                    existing.get("token", ""),
-                    existing.get("exchange", ""),
-                    existing.get("mode", ""),
-                    existing.get("futures_symbol") or ""
-                )
-            else:
-                ex_key = (
-                    existing.get("token", ""),
-                    existing.get("exchange", ""),
-                    existing.get("mode", ""),
-                    existing.get("network", ""),
-                    existing.get("contract_address", "")
-                )
-            if ex_key == key:
-                for k, v in token_data.items():
-                    if v is not None and v != "":
-                        existing[k] = v
+            existing_key = (
+                existing.get("token", "").upper(),
+                existing.get("exchange", ""),
+                existing.get("mode", ""),
+                existing.get("futures_symbol", "") if existing.get("mode") == "Futures" else
+                (existing.get("network", ""), existing.get("contract_address", ""))
+            )
+            if existing_key == key:
+                # Обновляем, сохраняя уже существующие пары
+                existing.update({k: v for k, v in token_data.items() if v})
+                if "spot_pairs" in token_data:
+                    existing.setdefault("spot_pairs", []).extend(token_data["spot_pairs"])
+                    existing["spot_pairs"] = list(dict.fromkeys(existing["spot_pairs"]))  # dedup
+                if "futures_pairs" in token_data:
+                    existing.setdefault("futures_pairs", []).extend(token_data["futures_pairs"])
+                    existing["futures_pairs"] = list(dict.fromkeys(existing["futures_pairs"]))
                 self._save_to_file()
                 return
 

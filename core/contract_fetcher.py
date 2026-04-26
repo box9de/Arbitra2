@@ -83,18 +83,14 @@ class ContractFetcher:
             print(f"[DEBUG] Ошибка _load_keys для {exchange}: {e}")
             return ('', '') if exchange != "OKX" else ('', '', '')
 
-    # ==================== BINANCE ====================
+    # ==================== BINANCE SPOT ====================
     def fetch_binance_spot_deposits(self, master_password: str):
-        api_key, api_secret = self._load_keys(master_password, "Binance")
         added = 0
         addresses_fetched = 0
 
-        # === ОТЛАДКА КЛЮЧЕЙ ===
-        print(f"[DEBUG] API Key length: {len(api_key)}")
-        print(f"[DEBUG] API Secret length: {len(api_secret) if api_secret else 0}")
-
         try:
             print(f"[Binance] Запрашиваем список монет и адресов (signed request)...")
+            api_key, api_secret = self._load_keys(master_password, "Binance")
 
             timestamp = int(time.time() * 1000)
             params = f"timestamp={timestamp}&recvWindow=60000"
@@ -107,8 +103,6 @@ class ContractFetcher:
             url = f"https://api.binance.com/sapi/v1/capital/config/getall?{params}&signature={signature}"
             headers = {'X-MBX-APIKEY': api_key} if api_key else {}
 
-            print(f"[DEBUG] Запрос URL: {url[:120]}...")  # частично, чтобы не спойлерить секрет
-
             resp = requests.get(url, headers=headers, timeout=20)
             resp.raise_for_status()
             coins = resp.json()
@@ -118,22 +112,28 @@ class ContractFetcher:
                 if not base:
                     continue
 
+                spot_pairs = [f"{base}USDT", f"{base}USDC", f"{base}BUSD"]
+                futures_pairs = []
+
                 for net in coin.get('networkList', []):
                     if not net.get('depositEnable', False):
                         continue
                     network = net.get('network', '')
                     contract = net.get('contractAddress', '') or net.get('address', '')
-                    if contract and network:
-                        token_data = {
-                            "token": base,
-                            "exchange": "Binance",
-                            "mode": "Spot",
-                            "network": network,
-                            "contract_address": contract,
-                            "source": "Binance Public Coin Info"
-                        }
-                        self.registry.add_token_full(token_data.copy())
-                        added += 1
+
+                    token_data = {
+                        "token": base,
+                        "exchange": "Binance",
+                        "mode": "Spot",
+                        "network": network,
+                        "contract_address": contract,
+                        "source": "Binance Public Coin Info",
+                        "spot_pairs": spot_pairs,
+                        "futures_pairs": futures_pairs
+                    }
+                    self.registry.add_token_full(token_data.copy())
+                    added += 1
+                    if contract:
                         addresses_fetched += 1
                         print(f"  → Binance {base} | {network} | {contract[:12]}...")
 
@@ -144,83 +144,54 @@ class ContractFetcher:
             print(f"[Binance Spot] Критическая ошибка: {e}")
             return 0
 
-    # ==================== BYBIT ====================
+    # ==================== BYBIT SPOT ====================
     def fetch_bybit_spot_deposits(self, master_password: str):
+        """Bybit Spot — получение монет, адресов контрактов и торговых пар"""
         added = 0
         addresses_fetched = 0
 
         try:
             print(f"[Bybit] Запрашиваем публичный список монет и адресов...")
 
-            api_key, api_secret = self._load_keys(master_password, "Bybit")
-
-            import requests
-            import time
-            import hmac
-            import hashlib
-
-            url = "https://api.bybit.com/v5/asset/coin/query-info"
-            timestamp = str(int(time.time() * 1000))
-            recv_window = "10000"
-            query_string = f"recvWindow={recv_window}"
-
-            # Правильная строка подписи Bybit v5 (timestamp + api_key + recv_window + query_string)
-            param_str = f"{timestamp}{api_key}{recv_window}{query_string}"
-            signature = hmac.new(
-                api_secret.encode('utf-8'),
-                param_str.encode('utf-8'),
-                hashlib.sha256
-            ).hexdigest()
-
-            headers = {
-                'X-BAPI-API-KEY': api_key,
-                'X-BAPI-SIGN': signature,
-                'X-BAPI-TIMESTAMP': timestamp,
-                'X-BAPI-RECV-WINDOW': recv_window,
-                'Content-Type': 'application/json'
-            }
-
-            full_url = f"{url}?{query_string}"
-
-            resp = requests.get(full_url, headers=headers, timeout=15)
-            print(f"[DEBUG Bybit] Status code: {resp.status_code}")
-
-            if resp.status_code != 200:
-                print(f"[DEBUG Bybit] Response: {resp.text[:500]}...")
-                return 0
-
+            # Публичный запрос (Bybit позволяет получать coin info без ключей)
+            resp = requests.get("https://api.bybit.com/v5/asset/coin/query-info", timeout=20)
+            resp.raise_for_status()
             data = resp.json()
-            print(f"[DEBUG Bybit] retCode: {data.get('retCode')}, retMsg: {data.get('retMsg')}")
 
-            coin_list = data.get('result', {}).get('rows', [])
-            print(f"[DEBUG Bybit] Найдено монет: {len(coin_list)}")
-
-            for coin in coin_list:
-                base = coin.get('coin')
+            for coin in data.get("result", {}).get("rows", []):
+                base = coin.get("name")
                 if not base:
                     continue
 
-                chains = coin.get('chains', [])
-                for net in chains:
-                    network = net.get('chain', '') or net.get('chainType', '')
-                    contract = net.get('contractAddress', '')
+                # Собираем торговые пары
+                spot_pairs = [f"{base}USDT", f"{base}USDC", f"{base}BUSD"]
+                futures_pairs = []
+
+                # Сети и адреса
+                for chain in coin.get("chains", []):
+                    if not chain.get("depositEnable", False):
+                        continue
+
+                    network = chain.get("chain", "")
+                    contract = chain.get("contractAddress", "")
 
                     token_data = {
                         "token": base,
                         "exchange": "Bybit",
                         "mode": "Spot",
-                        "network": network.upper() if network else "",
+                        "network": network,
                         "contract_address": contract,
-                        "source": "Bybit v5 Coin Info"
+                        "source": "Bybit v5 Coin Info",
+                        "spot_pairs": spot_pairs,
+                        "futures_pairs": futures_pairs
                     }
+
                     self.registry.add_token_full(token_data.copy())
                     added += 1
 
-                    if contract and network:
+                    if contract:
                         addresses_fetched += 1
                         print(f"  → Bybit {base} | {network} | {contract[:12]}...")
-                    else:
-                        print(f"  → Bybit {base} | {network or '---'} | {contract or '---'}")
 
             print(f"[Bybit Spot] Итого записей: {added} | Успешно получено адресов: {addresses_fetched}")
             return added
@@ -231,75 +202,69 @@ class ContractFetcher:
 
     # ==================== OKX ====================
     def fetch_okx_spot_deposits(self, master_password: str):
+        """OKX Spot — получение монет, адресов контрактов и торговых пар"""
         added = 0
         addresses_fetched = 0
 
         try:
             print(f"[OKX] Запрашиваем публичный список монет и адресов...")
 
-            # Загружаем конфиг
+            # Загружаем ключи
             config = self._load_encrypted_config(master_password)
-            okx_data = config.get('OKX', {})
-            api_key = okx_data.get('api_key', '') or okx_data.get('key', '')
-            api_secret = okx_data.get('api_secret', '') or okx_data.get('secret', '')
-            passphrase = okx_data.get('passphrase', '') or okx_data.get('pass', '')
+            okx_data = config.get("OKX", {})
+            api_key = okx_data.get("api_key") or okx_data.get("key", "")
+            api_secret = okx_data.get("api_secret") or okx_data.get("secret", "")
+            passphrase = okx_data.get("passphrase", "")
 
-            if not passphrase:
-                print("[OKX] Passphrase не найден в конфиге.")
-                passphrase = input("Введите OKX Passphrase: ").strip()
+            if not api_key or not api_secret:
+                print("[OKX] Ключи не найдены, используем публичный запрос (без passphrase)")
+                # fallback на публичный запрос, если ключей нет
+                resp = requests.get("https://www.okx.com/api/v5/asset/currencies", timeout=20)
+            else:
+                # Signed запрос (как в рабочей версии)
+                import time
+                import hmac
+                import hashlib
+                import base64
+                from datetime import datetime, timezone
 
-            print(f"[DEBUG OKX] Key: {len(api_key)} | Secret: {len(api_secret)} | Passphrase: {len(passphrase)}")
+                timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                method = "GET"
+                request_path = "/api/v5/asset/currencies"
+                pre_hash = timestamp + method + request_path
+                signature = base64.b64encode(
+                    hmac.new(
+                        api_secret.encode('utf-8'),
+                        pre_hash.encode('utf-8'),
+                        hashlib.sha256
+                    ).digest()
+                ).decode('utf-8')
 
-            import requests
-            import time
-            import hmac
-            import hashlib
-            import base64
-            from datetime import datetime, timezone
+                headers = {
+                    'OK-ACCESS-KEY': api_key,
+                    'OK-ACCESS-SIGN': signature,
+                    'OK-ACCESS-TIMESTAMP': timestamp,
+                    'OK-ACCESS-PASSPHRASE': passphrase,
+                    'Content-Type': 'application/json',
+                }
+                resp = requests.get("https://www.okx.com/api/v5/asset/currencies", headers=headers, timeout=20)
 
-            # Синхронизация времени
-            time_resp = requests.get("https://www.okx.com/api/v5/public/time", timeout=10)
-            server_ts = int(time_resp.json()['data'][0]['ts'])
-            timestamp = datetime.fromtimestamp(server_ts / 1000, tz=timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
-
-            method = "GET"
-            request_path = "/api/v5/asset/currencies"
-            pre_hash = timestamp + method + request_path
-            signature = base64.b64encode(
-                hmac.new(api_secret.encode('utf-8'), pre_hash.encode('utf-8'), hashlib.sha256).digest()
-            ).decode('utf-8')
-
-            headers = {
-                'OK-ACCESS-KEY': api_key,
-                'OK-ACCESS-SIGN': signature,
-                'OK-ACCESS-TIMESTAMP': timestamp,
-                'OK-ACCESS-PASSPHRASE': passphrase,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Accept': 'application/json',
-            }
-
-            resp = requests.get(
-                "https://www.okx.com/api/v5/asset/currencies",
-                headers=headers,
-                timeout=20
-            )
-
-            print(f"[DEBUG OKX] Status code: {resp.status_code}")
-            if resp.status_code != 200:
-                print(f"[DEBUG OKX] Response: {resp.text[:400]}...")
-                return 0
-
+            resp.raise_for_status()
             data = resp.json()
 
-            for coin in data.get('data', []):
-                base = coin.get('ccy')
+            for coin in data.get("data", []):
+                base = coin.get("ccy")
                 if not base:
                     continue
 
-                # Очистка + перевод сети в UPPERCASE
-                raw_chain = coin.get('chain', '')
-                chain = raw_chain.replace(base, '').replace('-', '').strip().upper() or raw_chain.upper()
-                contract = coin.get('ctAddr', '') or coin.get('addr', '')
+                # Собираем торговые пары
+                spot_pairs = [f"{base}USDT", f"{base}USDC", f"{base}BUSD"]
+                futures_pairs = []  # пока пусто, можно расширить позже
+
+                # Сеть и адрес
+                raw_chain = coin.get("chain", "")
+                chain = raw_chain.replace(base, "").replace("-", "").strip() or raw_chain
+                contract = coin.get("ctAddr", "") or coin.get("addr", "")
 
                 token_data = {
                     "token": base,
@@ -307,16 +272,17 @@ class ContractFetcher:
                     "mode": "Spot",
                     "network": chain,
                     "contract_address": contract,
-                    "source": "OKX Public Currencies"
+                    "source": "OKX Public Currencies",
+                    "spot_pairs": spot_pairs,
+                    "futures_pairs": futures_pairs
                 }
+
                 self.registry.add_token_full(token_data.copy())
                 added += 1
 
-                if contract and chain:
+                if contract:
                     addresses_fetched += 1
                     print(f"  → OKX {base} | {chain} | {contract[:12]}...")
-                else:
-                    print(f"  → OKX {base} | {chain or '---'} | {contract or '---'}")
 
             print(f"[OKX Spot] Итого записей: {added} | Успешно получено адресов: {addresses_fetched}")
             return added
@@ -325,20 +291,18 @@ class ContractFetcher:
             print(f"[OKX Spot] Критическая ошибка: {e}")
             return 0
 
-    def enrich_spot_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
-        if not master_password:
-            print("[ContractFetcher] Ошибка: мастер-пароль не передан")
-            return 0
-
+    def enrich_spot_from_exchanges(self, master_password: str):
+        """Обогащение Spot + сбор торговых пар (spot_pairs)"""
         total = 0
-        if binance:
+        print("[ContractFetcher] Начинаем обогащение Spot с бирж...")
+
+        if self.binance:
             total += self.fetch_binance_spot_deposits(master_password)
-        if bybit:
+        if self.bybit:
             total += self.fetch_bybit_spot_deposits(master_password)
-        if okx:
+        if self.okx:
             total += self.fetch_okx_spot_deposits(master_password)
 
-        self.registry._save_to_file()
         print(f"[ContractFetcher] ИТОГО добавлено/обновлено {total} записей из Spot бирж")
         return total
     
@@ -496,19 +460,16 @@ class ContractFetcher:
             print(f"[OKX Futures] Критическая ошибка: {e}")
             return 0
     
-    def enrich_futures_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
-        """Главный метод — обогащение фьючерсами со всех бирж"""
-        if not master_password:
-            print("[ContractFetcher] Ошибка: мастер-пароль не передан")
-            return 0
-
+    def enrich_futures_from_exchanges(self, master_password: str):
+        """Обогащение Futures + сбор фьючерсных тикеров"""
         total = 0
+        print("[ContractFetcher] Начинаем обогащение Futures с бирж...")
 
-        if binance:
+        if self.binance:
             total += self.fetch_binance_futures(master_password)
-        if bybit:
+        if self.bybit:
             total += self.fetch_bybit_futures(master_password)
-        if okx:
+        if self.okx:
             total += self.fetch_okx_futures(master_password)
 
         print(f"[ContractFetcher] ИТОГО добавлено/обновлено {total} записей из Futures бирж")

@@ -19,12 +19,11 @@ class TokenRegistry:
         return cls._instance
 
     def add_token_full(self, token_data: dict):
-        """Добавляет/обновляет запись с поддержкой spot_pairs и futures_pairs"""
-        # Нормализация сети (оставляем как было)
-        
+        """Добавляет/обновляет запись с поддержкой spot_pairs и futures_pairs.
+        Полная нормализация сетей + надёжная дедупликация."""
+
         # === ПОЛНАЯ КАРТА НОРМАЛИЗАЦИИ СЕТЕЙ ===
         network_map = {
-            # Основные
             "SOL": "SOLANA", "SOLANA": "SOLANA",
             "ETH": "ETH", "ERC20": "ETH", "ERC-20": "ETH", "ER20": "ETH", "ETHER": "ETH",
             "BERA": "BERACHAIN", "BERACHAIN": "BERACHAIN",
@@ -58,50 +57,68 @@ class TokenRegistry:
             "PLASMA": "PLASMA",
             "ZIRCUIT": "ZIRCUIT",
             "KROMA": "KROMA",
-            # Добавляй сюда новые по мере появления
         }
 
-        # Применяем нормализацию
+        # Нормализация сети
         raw_network = str(token_data.get("network", "")).strip().upper()
         token_data["network"] = network_map.get(raw_network, raw_network)
 
-        # Ключ дедупликации
+        # === КЛЮЧ ДЕДУПЛИКАЦИИ ===
         if token_data.get("mode") == "Futures":
             key = (
-                token_data.get("token", "").upper(),
+                token_data.get("token", "").upper().strip(),
                 token_data.get("exchange", ""),
                 token_data.get("mode", ""),
-                token_data.get("futures_symbol", "")
+                token_data.get("futures_symbol", "").strip()
             )
         else:
             key = (
-                token_data.get("token", "").upper(),
+                token_data.get("token", "").upper().strip(),
                 token_data.get("exchange", ""),
                 token_data.get("mode", ""),
                 token_data.get("network", ""),
-                token_data.get("contract_address", "")
+                token_data.get("contract_address", "").lower().strip()
             )
 
         # Поиск существующей записи
         for existing in self.tokens:
-            existing_key = (
-                existing.get("token", "").upper(),
-                existing.get("exchange", ""),
-                existing.get("mode", ""),
-                existing.get("futures_symbol", "") if existing.get("mode") == "Futures" else
-                (existing.get("network", ""), existing.get("contract_address", ""))
-            )
+            if existing.get("mode") == "Futures":
+                existing_key = (
+                    existing.get("token", "").upper().strip(),
+                    existing.get("exchange", ""),
+                    existing.get("mode", ""),
+                    existing.get("futures_symbol", "").strip()
+                )
+            else:
+                existing_key = (
+                    existing.get("token", "").upper().strip(),
+                    existing.get("exchange", ""),
+                    existing.get("mode", ""),
+                    existing.get("network", ""),
+                    existing.get("contract_address", "").lower().strip()
+                )
+
             if existing_key == key:
-                # Обновляем, сохраняя уже существующие пары
-                existing.update({k: v for k, v in token_data.items() if v})
-                if "spot_pairs" in token_data:
+                # Обновляем существующую запись
+                for k, v in token_data.items():
+                    if v not in (None, "", []):
+                        existing[k] = v
+
+                # Объединяем пары без дубликатов
+                if "spot_pairs" in token_data and token_data["spot_pairs"]:
                     existing.setdefault("spot_pairs", []).extend(token_data["spot_pairs"])
-                    existing["spot_pairs"] = list(dict.fromkeys(existing["spot_pairs"]))  # dedup
-                if "futures_pairs" in token_data:
+                    existing["spot_pairs"] = list(dict.fromkeys(existing["spot_pairs"]))
+
+                if "futures_pairs" in token_data and token_data["futures_pairs"]:
                     existing.setdefault("futures_pairs", []).extend(token_data["futures_pairs"])
                     existing["futures_pairs"] = list(dict.fromkeys(existing["futures_pairs"]))
+
                 self._save_to_file()
                 return
+
+        # Добавляем новую запись
+        self.tokens.append(token_data.copy())
+        self._save_to_file()
 
         # Новая запись
         self.tokens.append(token_data.copy())
@@ -230,21 +247,16 @@ class TokenRegistry:
         return updated
 
     # ====================== SPOT С БИРЖ ======================
-    def enrich_spot_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
-        """Главный метод — обогащение Spot-токенами и адресами контрактов с бирж"""
-        from core.contract_fetcher import ContractFetcher
-
+    def enrich_spot_from_exchanges(self, master_password: str = None):
+        """Обогащение Spot-контрактами с бирж (вызывает обновлённый ContractFetcher)"""
         if not master_password:
             print("[TokenRegistry] Ошибка: мастер-пароль не передан")
             return 0
 
+        from core.contract_fetcher import ContractFetcher
+
         fetcher = ContractFetcher()
-        total = fetcher.enrich_spot_from_exchanges(
-            binance=binance, 
-            bybit=bybit, 
-            okx=okx, 
-            master_password=master_password
-        )
+        total = fetcher.enrich_spot_from_exchanges(master_password=master_password)
 
         self._save_to_file()
         return total
@@ -255,21 +267,16 @@ class TokenRegistry:
         self.tokens = []
         self._save_to_file()
 
-    def enrich_futures_from_exchanges(self, binance=True, bybit=True, okx=True, master_password: str = None):
-        """Обёртка для вызова из GUI — полностью аналогично enrich_spot_from_exchanges"""
-        from core.contract_fetcher import ContractFetcher
-
+    def enrich_futures_from_exchanges(self, master_password: str = None):
+        """Обогащение Futures с бирж"""
         if not master_password:
             print("[TokenRegistry] Ошибка: мастер-пароль не передан")
             return 0
 
+        from core.contract_fetcher import ContractFetcher
+
         fetcher = ContractFetcher()
-        total = fetcher.enrich_futures_from_exchanges(
-            binance=binance, 
-            bybit=bybit, 
-            okx=okx, 
-            master_password=master_password
-        )
+        total = fetcher.enrich_futures_from_exchanges(master_password=master_password)
 
         self._save_to_file()
         return total

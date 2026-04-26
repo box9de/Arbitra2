@@ -146,35 +146,65 @@ class ContractFetcher:
 
     # ==================== BYBIT SPOT ====================
     def fetch_bybit_spot_deposits(self, master_password: str):
-        """Bybit Spot — получение монет, адресов контрактов и торговых пар"""
+        """Bybit Spot — signed запрос + максимальная отладка"""
         added = 0
         addresses_fetched = 0
 
         try:
-            print(f"[Bybit] Запрашиваем публичный список монет и адресов...")
+            print(f"[Bybit] Запрашиваем список монет и адресов (signed request with time sync)...")
+            api_key, api_secret = self._load_keys(master_password, "Bybit")
 
-            # Публичный запрос (Bybit позволяет получать coin info без ключей)
-            resp = requests.get("https://api.bybit.com/v5/asset/coin/query-info", timeout=20)
+            # Получаем server time
+            time_resp = requests.get("https://api.bybit.com/v5/market/time", timeout=10)
+            server_time = int(time_resp.json()["result"]["timeSecond"]) * 1000
+            timestamp = str(server_time)
+            recv_window = "30000"
+
+            param_str = timestamp + api_key + recv_window
+            signature = hmac.new(
+                api_secret.encode('utf-8'),
+                param_str.encode('utf-8'),
+                hashlib.sha256
+            ).hexdigest()
+
+            headers = {
+                'X-BAPI-API-KEY': api_key,
+                'X-BAPI-SIGN': signature,
+                'X-BAPI-TIMESTAMP': timestamp,
+                'X-BAPI-RECV-WINDOW': recv_window,
+            }
+
+            url = "https://api.bybit.com/v5/asset/coin/query-info"
+            resp = requests.get(url, headers=headers, timeout=20)
+
+            print(f"[DEBUG Bybit] Status code: {resp.status_code}")
+
             resp.raise_for_status()
             data = resp.json()
 
-            for coin in data.get("result", {}).get("rows", []):
-                base = coin.get("name")
+            rows = data.get("result", {}).get("rows", [])
+            print(f"[DEBUG Bybit] Найдено монет (rows): {len(rows)}")
+
+            if rows:
+                print(f"[DEBUG Bybit] Ключи первой монеты: {list(rows[0].keys())}")
+
+            for coin in rows:
+                base = coin.get("coin") or coin.get("name")
                 if not base:
+                    print(f"[DEBUG Bybit] Пропущена монета без имени")
                     continue
 
-                # Собираем торговые пары
                 spot_pairs = [f"{base}USDT", f"{base}USDC", f"{base}BUSD"]
                 futures_pairs = []
 
-                # Сети и адреса
-                for chain in coin.get("chains", []):
-                    if not chain.get("depositEnable", False):
-                        continue
+                chains = coin.get("chains", [])
+                print(f"[DEBUG Bybit] У {base} найдено chains: {len(chains)}")
 
-                    network = chain.get("chain", "")
-                    contract = chain.get("contractAddress", "")
+                for chain in chains:
+                    network = chain.get("chain", "").strip()
+                    contract = chain.get("contractAddress", "").strip()
 
+                    # Убрали жёсткий фильтр depositEnable — добавляем всё, что есть
                     token_data = {
                         "token": base,
                         "exchange": "Bybit",
@@ -192,6 +222,8 @@ class ContractFetcher:
                     if contract:
                         addresses_fetched += 1
                         print(f"  → Bybit {base} | {network} | {contract[:12]}...")
+                    else:
+                        print(f"  → Bybit {base} | {network} | (нет адреса)")
 
             print(f"[Bybit Spot] Итого записей: {added} | Успешно получено адресов: {addresses_fetched}")
             return added
@@ -292,16 +324,14 @@ class ContractFetcher:
             return 0
 
     def enrich_spot_from_exchanges(self, master_password: str):
-        """Обогащение Spot + сбор торговых пар (spot_pairs)"""
+        """Обогащение Spot-контрактами со всех бирж + сбор торговых пар"""
         total = 0
         print("[ContractFetcher] Начинаем обогащение Spot с бирж...")
 
-        if self.binance:
-            total += self.fetch_binance_spot_deposits(master_password)
-        if self.bybit:
-            total += self.fetch_bybit_spot_deposits(master_password)
-        if self.okx:
-            total += self.fetch_okx_spot_deposits(master_password)
+        # Вызываем все три метода последовательно
+        total += self.fetch_binance_spot_deposits(master_password)
+        total += self.fetch_bybit_spot_deposits(master_password)
+        total += self.fetch_okx_spot_deposits(master_password)
 
         print(f"[ContractFetcher] ИТОГО добавлено/обновлено {total} записей из Spot бирж")
         return total
@@ -461,16 +491,13 @@ class ContractFetcher:
             return 0
     
     def enrich_futures_from_exchanges(self, master_password: str):
-        """Обогащение Futures + сбор фьючерсных тикеров"""
+        """Обогащение Futures со всех бирж"""
         total = 0
         print("[ContractFetcher] Начинаем обогащение Futures с бирж...")
 
-        if self.binance:
-            total += self.fetch_binance_futures(master_password)
-        if self.bybit:
-            total += self.fetch_bybit_futures(master_password)
-        if self.okx:
-            total += self.fetch_okx_futures(master_password)
+        total += self.fetch_binance_futures(master_password)
+        total += self.fetch_bybit_futures(master_password)
+        total += self.fetch_okx_futures(master_password)
 
         print(f"[ContractFetcher] ИТОГО добавлено/обновлено {total} записей из Futures бирж")
         return total

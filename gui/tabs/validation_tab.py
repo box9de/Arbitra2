@@ -19,12 +19,10 @@ class ValidationTab(QWidget):
         layout.setSpacing(10)
         layout.setContentsMargins(10, 10, 10, 10)
 
-        # Заголовок
         title = QLabel("Валидация сопоставления токенов")
         title.setStyleSheet("font-size: 16px; font-weight: bold;")
         layout.addWidget(title)
 
-        # Поиск
         search_layout = QHBoxLayout()
         search_label = QLabel("Поиск:")
         self.search_edit = QLineEdit()
@@ -33,7 +31,6 @@ class ValidationTab(QWidget):
         search_layout.addWidget(self.search_edit)
         layout.addLayout(search_layout)
 
-        # Область с карточками
         self.scroll = QScrollArea()
         self.scroll.setWidgetResizable(True)
         self.cards_widget = QWidget()
@@ -42,7 +39,6 @@ class ValidationTab(QWidget):
         self.scroll.setWidget(self.cards_widget)
         layout.addWidget(self.scroll)
 
-        # Кнопки
         btn_layout = QHBoxLayout()
         self.btn_refresh = QPushButton("Обновить сравнение")
         self.btn_add_selected = QPushButton("Добавить выбранное в мониторинг")
@@ -50,20 +46,14 @@ class ValidationTab(QWidget):
         btn_layout.addWidget(self.btn_add_selected)
         layout.addLayout(btn_layout)
 
-        # Сигналы
         self.search_edit.textChanged.connect(self.filter_cards)
         self.btn_refresh.clicked.connect(self.load_cards)
 
-        # Загружаем карточки только при первом переходе на вкладку
-        # (вызов происходит из main_window.py при смене вкладки)
-
     def load_cards(self):
-        """Загружаем карточки (вызывается при переходе на вкладку)"""
         if self.cards_loaded:
             return
         self.cards_loaded = True
 
-        # Очистка предыдущих карточек
         for i in reversed(range(self.cards_layout.count())):
             widget = self.cards_layout.itemAt(i).widget()
             if widget:
@@ -71,7 +61,7 @@ class ValidationTab(QWidget):
 
         data = self.registry.get_all_tokens()
 
-        # Группируем записи по токену (одна карточка = один токен)
+        # Группируем по токену
         tokens = {}
         for entry in data:
             token_name = entry.get("token", "").upper()
@@ -92,7 +82,7 @@ class ValidationTab(QWidget):
         layout = QVBoxLayout(frame)
         layout.setSpacing(10)
 
-        # Заголовок карточки
+        # Заголовок
         header = QHBoxLayout()
         title = QLabel(token_name)
         title.setStyleSheet("font-weight: bold; font-size: 15px;")
@@ -138,12 +128,14 @@ class ValidationTab(QWidget):
                     cb.setChecked(True)
                     box_layout.addWidget(cb)
 
-            # Futures
+            # Futures — исправленная логика
             futures_pairs = []
             for e in exchange_entries:
                 if e.get("mode") == "Futures":
-                    futures_pairs.extend(e.get("futures_pairs", []))
-            futures_pairs = list(dict.fromkeys(futures_pairs))  # убираем дубликаты
+                    symbol = e.get("futures_symbol")
+                    if symbol:
+                        futures_pairs.append(symbol)
+            futures_pairs = list(dict.fromkeys(futures_pairs))
 
             if futures_pairs:
                 box_layout.addWidget(QLabel("<b>Futures:</b>"))
@@ -152,7 +144,7 @@ class ValidationTab(QWidget):
                     cb.setChecked(True)
                     box_layout.addWidget(cb)
 
-            # Галочка всей биржи
+            # Галочка биржи
             exchange_cb = QCheckBox(f"[✓] Включить {exchange_name} в мониторинг")
             exchange_cb.setChecked(True)
             box_layout.addWidget(exchange_cb)
@@ -162,7 +154,6 @@ class ValidationTab(QWidget):
         return frame
 
     def filter_cards(self):
-        """Фильтрация карточек по поиску"""
         text = self.search_edit.text().strip().lower()
         for i in range(self.cards_layout.count()):
             widget = self.cards_layout.itemAt(i).widget()

@@ -39,7 +39,7 @@ class GlobalRegistryTab(QWidget):
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
-        self.table.setSortingEnabled(True)          # ← важно для сортировки
+        self.table.setSortingEnabled(True)
 
         # Порядок столбцов
         headers = [
@@ -58,7 +58,7 @@ class GlobalRegistryTab(QWidget):
         # Настройка заголовка
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(QHeaderView.Interactive)     # ← главное изменение: ручная регулировка
+        header.setSectionResizeMode(QHeaderView.Interactive)     # ручная регулировка ширины
         header.setStretchLastSection(True)
         header.setSectionsClickable(True)
         header.setSortIndicatorShown(True)
@@ -124,7 +124,7 @@ class GlobalRegistryTab(QWidget):
         # Начальная авто-подгонка
         self.table.resizeColumnsToContents()
 
-        # Начальные разумные ширины (можно тянуть вручную)
+        # Фиксированные ширины для проблемных колонок
         self.table.setColumnWidth(5, 220)   # Сеть
         self.table.setColumnWidth(6, 520)   # Адрес контракта
 
@@ -137,21 +137,6 @@ class GlobalRegistryTab(QWidget):
         )
         self.header_label.setText(stat_text)
 
-    def filter_table(self):
-        self.load_registry()
-
-    # (остальные методы без изменений — import_from_coingecko, enrich_spot_from_exchanges, confirm_clear_registry)
-    def import_from_coingecko(self):
-        self.progress = QProgressDialog("Импорт топ-5000 токенов с CoinGecko...", "Отмена", 0, 20, self)
-        self.progress.setWindowModality(Qt.WindowModal)
-        self.progress.show()
-
-        real_count = self.registry.import_top_coins_from_coingecko()
-        self.progress.close()
-
-        QMessageBox.information(self, "Готово", f"Импортировано/обновлено.\n\nСейчас в реестре: {real_count} токенов")
-        self.load_registry()
-
     def enrich_spot_from_exchanges(self):
         """Кнопка: Обогащение Spot-контрактами с бирж"""
         password, ok = QInputDialog.getText(
@@ -163,53 +148,27 @@ class GlobalRegistryTab(QWidget):
         if not ok or not password:
             return
 
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Обогащение Spot-контрактами")
-        dialog.resize(300, 180)
-
-        layout = QVBoxLayout(dialog)
-        layout.addWidget(QLabel("Выберите биржи для обогащения:"))
-
-        cb_binance = QCheckBox("Binance")
-        cb_bybit = QCheckBox("Bybit")
-        cb_okx = QCheckBox("OKX")
-
-        cb_binance.setChecked(True)
-        cb_bybit.setChecked(True)
-        cb_okx.setChecked(True)
-
-        layout.addWidget(cb_binance)
-        layout.addWidget(cb_bybit)
-        layout.addWidget(cb_okx)
-
-        btn_layout = QHBoxLayout()
-        btn_start = QPushButton("Начать обогащение")
-        btn_cancel = QPushButton("Отмена")
-        btn_start.clicked.connect(dialog.accept)
-        btn_cancel.clicked.connect(dialog.reject)
-        btn_layout.addWidget(btn_start)
-        btn_layout.addWidget(btn_cancel)
-        layout.addLayout(btn_layout)
-
-        if dialog.exec() != QDialog.Accepted:
-            return
-
-        self.progress = QProgressDialog("Обогащение Spot-контрактами с бирж...\n(может занять несколько минут)", 
-                                        "Отмена", 0, 100, self)
-        self.progress.setWindowModality(Qt.WindowModal)
-        self.progress.show()
-
-        total = self.registry.enrich_spot_from_exchanges(
-            binance=cb_binance.isChecked(),
-            bybit=cb_bybit.isChecked(),
-            okx=cb_okx.isChecked(),
-            master_password=password
-        )
-
-        self.progress.close()
+        total = self.registry.enrich_spot_from_exchanges(master_password=password)
 
         QMessageBox.information(self, "Готово", 
-                                f"Обогащение завершено.\n\nДобавлено/обновлено {total} записей.")
+                                f"Обогащение Spot завершено.\n\nДобавлено/обновлено {total} записей.")
+        self.load_registry()
+
+    def enrich_futures_from_exchanges(self):
+        """Кнопка: Обогащение Futures"""
+        password, ok = QInputDialog.getText(
+            self, 
+            "Мастер-пароль", 
+            "Введите мастер-пароль для доступа к API-ключам:", 
+            QLineEdit.Password
+        )
+        if not ok or not password:
+            return
+
+        total = self.registry.enrich_futures_from_exchanges(master_password=password)
+
+        QMessageBox.information(self, "Готово", 
+                                f"Обогащение Futures завершено.\n\nДобавлено/обновлено {total} записей.")
         self.load_registry()
 
     def confirm_clear_registry(self):
@@ -227,36 +186,6 @@ class GlobalRegistryTab(QWidget):
             QMessageBox.information(self, "Готово", "Реестр полностью очищен.")
             self.load_registry()
 
-    def enrich_futures_from_exchanges(self):
-        """Запуск обогащения фьючерсами"""
-        password, ok = QInputDialog.getText(
-            self, "Мастер-пароль", 
-            "Введите мастер-пароль для доступа к API-ключам:", 
-            QLineEdit.Password
-        )
-        if not ok or not password:
-            return
-
-        reply = QMessageBox.question(
-            self, "Обогащение Futures", 
-            "Запустить импорт фьючерсов со всех бирж?\n\n"
-            "Это добавит записи с mode = Futures.",
-            QMessageBox.Yes | QMessageBox.No
-        )
-        if reply != QMessageBox.Yes:
-            return
-
-        total = self.registry.enrich_futures_from_exchanges(
-            binance=True, bybit=True, okx=True, 
-            master_password=password
-        )
-
-        QMessageBox.information(
-            self, "Готово", 
-            f"Обогащение Futures завершено.\nДобавлено/обновлено {total} записей."
-        )
-        self.load_registry()
-
     def import_coingecko(self):
         """Запуск импорта топ-5000 токенов с CoinGecko"""
         reply = QMessageBox.question(
@@ -273,7 +202,8 @@ class GlobalRegistryTab(QWidget):
             f"Импорт CoinGecko завершён.\nВсего токенов в реестре: {total}"
         )
         self.load_registry()
-    # ====================== НОВЫЙ МЕТОД: фильтрация ======================
+
+    # ====================== Сортировка и фильтрация ======================
     def _sort_table(self, column: int):
         """Сортировка с переключением Asc/Desc"""
         if not hasattr(self, '_sort_column'):
@@ -281,7 +211,6 @@ class GlobalRegistryTab(QWidget):
             self._sort_order = Qt.AscendingOrder
 
         if self._sort_column == column:
-            # Переключаем порядок
             self._sort_order = Qt.DescendingOrder if self._sort_order == Qt.AscendingOrder else Qt.AscendingOrder
         else:
             self._sort_column = column

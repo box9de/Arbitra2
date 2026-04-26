@@ -28,17 +28,23 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(MonitoringTab(), "Мониторинг")
         self.tabs.addTab(GlobalRegistryTab(), "Глобальный реестр")
 
-        # Верхний ToolBar (над вкладками)
+        # Вкладка Валидация
+        from gui.tabs.validation_tab import ValidationTab
+        self.validation_tab = ValidationTab()
+        self.tabs.addTab(self.validation_tab, "Валидация")
+
+        # Подключаем сигнал смены вкладки
+        self.tabs.currentChanged.connect(self.on_tab_changed)
+
+        # Верхний ToolBar
         self.toolbar = QToolBar()
         self.toolbar.setMovable(False)
         self.addToolBar(self.toolbar)
 
-        # Spacer, чтобы кнопка API Keys была в ПРАВОМ углу
         spacer = QWidget()
         spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.toolbar.addWidget(spacer)
 
-        # Кнопка API Keys
         self.action_api_keys = QAction("🔑 API Keys", self)
         self.action_api_keys.triggered.connect(self.open_api_keys_dialog)
         self.toolbar.addAction(self.action_api_keys)
@@ -49,6 +55,13 @@ class MainWindow(QMainWindow):
         self.updater_started = False
 
         QTimer.singleShot(2500, self._start_updater_with_retry)
+
+    def on_tab_changed(self, index):
+        """Вызывается при переключении вкладок"""
+        if self.tabs.tabText(index) == "Валидация":
+            # Загружаем карточки только при переходе на вкладку
+            if hasattr(self.validation_tab, 'load_cards'):
+                self.validation_tab.load_cards()
 
     def _start_updater_with_retry(self):
         if self._are_tabs_ready():

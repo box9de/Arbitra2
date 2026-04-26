@@ -74,13 +74,14 @@ class ValidationTab(QWidget):
             self.cards_layout.addWidget(card)
 
     def create_card(self, token_name: str, entries: list):
-        """Создаёт одну подробную карточку на токен"""
+        """Компактная карточка: пары идут строго влево одна за другой."""
         frame = QFrame()
         frame.setFrameShape(QFrame.StyledPanel)
-        frame.setStyleSheet("background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 10px;")
+        frame.setStyleSheet("background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 6px; padding: 4px;")
 
         layout = QVBoxLayout(frame)
-        layout.setSpacing(10)
+        layout.setSpacing(4)
+        layout.setContentsMargins(6, 6, 6, 6)
 
         # Заголовок
         header = QHBoxLayout()
@@ -100,8 +101,9 @@ class ValidationTab(QWidget):
                 continue
 
             box = QFrame()
-            box.setStyleSheet("background-color: #f0f0f0; border-radius: 6px; padding: 8px;")
+            box.setStyleSheet("background-color: #f0f0f0; border-radius: 4px; padding: 4px;")
             box_layout = QVBoxLayout(box)
+            box_layout.setSpacing(4)
 
             box_layout.addWidget(QLabel(f"<b>{exchange_name}</b>"))
 
@@ -111,11 +113,16 @@ class ValidationTab(QWidget):
                 if e.get("mode") == "Spot":
                     network = e.get("network", "")
                     address = e.get("contract_address", "")
-                    addr_short = address[:12] + "..." if address else "—"
-                    net_text += f"   • {network} → {addr_short}\n"
-            box_layout.addWidget(QLabel(net_text.strip()))
+                    if address:
+                        net_text += f"• {network} → {address}\n"
+                    else:
+                        net_text += f"• {network} → (нет адреса)\n"
+            net_label = QLabel(net_text.strip())
+            net_label.setWordWrap(True)
+            net_label.setStyleSheet("font-family: monospace; font-size: 13px;")
+            box_layout.addWidget(net_label)
 
-            # Spot-пары
+            # Spot-пары — строго влево одна за другой
             spot_pairs = []
             for e in exchange_entries:
                 if e.get("mode") == "Spot":
@@ -123,12 +130,16 @@ class ValidationTab(QWidget):
                     break
             if spot_pairs:
                 box_layout.addWidget(QLabel("<b>Spot-пары:</b>"))
+                spot_row = QHBoxLayout()
+                spot_row.setSpacing(4)           # минимальное расстояние
+                spot_row.setAlignment(Qt.AlignLeft)   # ← строго влево
                 for pair in spot_pairs:
                     cb = QCheckBox(pair)
                     cb.setChecked(True)
-                    box_layout.addWidget(cb)
+                    spot_row.addWidget(cb)
+                box_layout.addLayout(spot_row)
 
-            # Futures — исправленная логика
+            # Futures — строго влево одна за другой
             futures_pairs = []
             for e in exchange_entries:
                 if e.get("mode") == "Futures":
@@ -139,10 +150,14 @@ class ValidationTab(QWidget):
 
             if futures_pairs:
                 box_layout.addWidget(QLabel("<b>Futures:</b>"))
+                futures_row = QHBoxLayout()
+                futures_row.setSpacing(4)
+                futures_row.setAlignment(Qt.AlignLeft)   # ← строго влево
                 for pair in futures_pairs:
                     cb = QCheckBox(pair)
                     cb.setChecked(True)
-                    box_layout.addWidget(cb)
+                    futures_row.addWidget(cb)
+                box_layout.addLayout(futures_row)
 
             # Галочка биржи
             exchange_cb = QCheckBox(f"[✓] Включить {exchange_name} в мониторинг")

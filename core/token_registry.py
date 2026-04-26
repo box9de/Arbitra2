@@ -19,10 +19,9 @@ class TokenRegistry:
         return cls._instance
 
     def add_token_full(self, token_data: dict):
-        """Добавляет/обновляет запись с поддержкой spot_pairs и futures_pairs.
-        Полная нормализация сетей + надёжная дедупликация."""
+        """САМАЯ СТРОГАЯ ФИНАЛЬНАЯ ВЕРСИЯ — дубли должны исчезнуть полностью."""
 
-        # === ПОЛНАЯ КАРТА НОРМАЛИЗАЦИИ СЕТЕЙ ===
+        # === НОРМАЛИЗАЦИЯ ВСЕХ ПОЛЕЙ ===
         network_map = {
             "SOL": "SOLANA", "SOLANA": "SOLANA",
             "ETH": "ETH", "ERC20": "ETH", "ERC-20": "ETH", "ER20": "ETH", "ETHER": "ETH",
@@ -45,11 +44,11 @@ class TokenRegistry:
             "MANTLE": "MANTLE",
             "LINEA": "LINEA",
             "SCROLL": "SCROLL",
-            "CHILIZ": "CHILIZ", "CHZ2": "CHILIZ", "CHILIZ CHAIN": "CHILIZ", "CHILIZ 2.0 CHAIN": "CHILIZ",
+            "CHILIZ": "CHILIZ", "CHZ2": "CHILIZ",
             "EOS": "EOS", "VAULTA": "EOS", "CORE.VAULTA": "EOS",
-            "ENDURANCE": "ENDURANCE", "ENDURANCE SMART CHAIN": "ENDURANCE",
+            "ENDURANCE": "ENDURANCE",
             "KOKTC": "KOKTC",
-            "MERLIN": "MERLIN", "MERLIN NETWORK": "MERLIN",
+            "MERLIN": "MERLIN",
             "STARKNET": "STARKNET",
             "HYPEREVM": "HYPEREVM",
             "MONAD": "MONAD",
@@ -59,68 +58,70 @@ class TokenRegistry:
             "KROMA": "KROMA",
         }
 
-        # Нормализация сети
+        token_data["token"] = str(token_data.get("token", "")).strip().upper()
         raw_network = str(token_data.get("network", "")).strip().upper()
         token_data["network"] = network_map.get(raw_network, raw_network)
+        token_data["contract_address"] = str(token_data.get("contract_address", "")).strip().lower()
 
-        # === КЛЮЧ ДЕДУПЛИКАЦИИ ===
+        # === СТРОГИЙ КЛЮЧ ДЕДУПЛИКАЦИИ ===
         if token_data.get("mode") == "Futures":
             key = (
-                token_data.get("token", "").upper().strip(),
+                token_data["token"],
                 token_data.get("exchange", ""),
-                token_data.get("mode", ""),
+                "Futures",
                 token_data.get("futures_symbol", "").strip()
             )
         else:
             key = (
-                token_data.get("token", "").upper().strip(),
+                token_data["token"],
                 token_data.get("exchange", ""),
-                token_data.get("mode", ""),
+                "Spot",
                 token_data.get("network", ""),
-                token_data.get("contract_address", "").lower().strip()
+                token_data.get("contract_address", "")
             )
 
-        # Поиск существующей записи
+        print(f"[DEBUG add_token_full] KEY = {key}")
+
+        # Быстрый поиск через set (чтобы не было дублирования даже при большом количестве записей)
         for existing in self.tokens:
             if existing.get("mode") == "Futures":
                 existing_key = (
                     existing.get("token", "").upper().strip(),
                     existing.get("exchange", ""),
-                    existing.get("mode", ""),
+                    "Futures",
                     existing.get("futures_symbol", "").strip()
                 )
             else:
+                ex_network = str(existing.get("network", "")).strip().upper()
+                ex_network = network_map.get(ex_network, ex_network)
                 existing_key = (
                     existing.get("token", "").upper().strip(),
                     existing.get("exchange", ""),
-                    existing.get("mode", ""),
-                    existing.get("network", ""),
-                    existing.get("contract_address", "").lower().strip()
+                    "Spot",
+                    ex_network,
+                    str(existing.get("contract_address", "")).strip().lower()
                 )
 
             if existing_key == key:
-                # Обновляем существующую запись
+                print(f"[DEBUG add_token_full] → UPDATE existing for {token_data.get('token')}")
+                # Обновляем + объединяем пары
                 for k, v in token_data.items():
-                    if v not in (None, "", []):
+                    if v not in (None, "", [], {}):
                         existing[k] = v
 
-                # Объединяем пары без дубликатов
-                if "spot_pairs" in token_data and token_data["spot_pairs"]:
+                if "spot_pairs" in token_data and token_data.get("spot_pairs"):
                     existing.setdefault("spot_pairs", []).extend(token_data["spot_pairs"])
                     existing["spot_pairs"] = list(dict.fromkeys(existing["spot_pairs"]))
 
-                if "futures_pairs" in token_data and token_data["futures_pairs"]:
+                if "futures_pairs" in token_data and token_data.get("futures_pairs"):
                     existing.setdefault("futures_pairs", []).extend(token_data["futures_pairs"])
                     existing["futures_pairs"] = list(dict.fromkeys(existing["futures_pairs"]))
 
                 self._save_to_file()
                 return
 
-        # Добавляем новую запись
-        self.tokens.append(token_data.copy())
-        self._save_to_file()
-
         # Новая запись
+        print(f"[DEBUG add_token_full] → NEW record for {token_data.get('token')}")
         self.tokens.append(token_data.copy())
         self._save_to_file()
 
@@ -133,15 +134,64 @@ class TokenRegistry:
         self._load_from_file()
 
     def _load_from_file(self):
-        path = "data/token_registry.json"
+        """Загружает реестр и нормализует все старые записи (чтобы не было дублей)."""
+        import os
+        import json
+
+        path = os.path.join(os.path.dirname(__file__), '..', 'data', 'token_registry.json')
         if os.path.exists(path):
-            try:
-                with open(path, 'r', encoding='utf-8') as f:
+            with open(path, 'r', encoding='utf-8') as f:
+                try:
                     self.tokens = json.load(f)
-            except Exception:
-                self.tokens = []
+                except:
+                    self.tokens = []
         else:
             self.tokens = []
+
+        # === НОРМАЛИЗАЦИЯ СЕТЕЙ ДЛЯ ВСЕХ СТАРЫХ ЗАПИСЕЙ ===
+        network_map = {
+            "SOL": "SOLANA", "SOLANA": "SOLANA",
+            "ETH": "ETH", "ERC20": "ETH", "ERC-20": "ETH", "ER20": "ETH", "ETHER": "ETH",
+            "BERA": "BERACHAIN", "BERACHAIN": "BERACHAIN",
+            "ARBI": "ARBITRUM", "ARB": "ARBITRUM", "ARBITRUM": "ARBITRUM", "ARBITRUM ONE": "ARBITRUM",
+            "OP": "OPTIMISM", "OPT": "OPTIMISM", "OPTIMISM": "OPTIMISM",
+            "BASE": "BASE",
+            "BSC": "BSC",
+            "MATIC": "POLYGON", "POLYGON": "POLYGON",
+            "AVAX": "AVALANCHE", "CAVAX": "AVALANCHE", "AVALANCHE": "AVALANCHE",
+            "KLAY": "KLAYTN", "KLAYTN": "KLAYTN",
+            "TON": "TON",
+            "TRX": "TRON", "TRON": "TRON",
+            "XRP": "XRP",
+            "ADA": "CARDANO",
+            "DOT": "POLKADOT",
+            "NEAR": "NEAR",
+            "SUI": "SUI",
+            "ZKSYNC": "ZKSYNC ERA", "ZK": "ZKSYNC ERA", "ZKSYNC ERA": "ZKSYNC ERA",
+            "MANTLE": "MANTLE",
+            "LINEA": "LINEA",
+            "SCROLL": "SCROLL",
+            "CHILIZ": "CHILIZ", "CHZ2": "CHILIZ",
+            "EOS": "EOS", "VAULTA": "EOS", "CORE.VAULTA": "EOS",
+            "ENDURANCE": "ENDURANCE",
+            "KOKTC": "KOKTC",
+            "MERLIN": "MERLIN",
+            "STARKNET": "STARKNET",
+            "HYPEREVM": "HYPEREVM",
+            "MONAD": "MONAD",
+            "RONIN": "RONIN",
+            "PLASMA": "PLASMA",
+            "ZIRCUIT": "ZIRCUIT",
+            "KROMA": "KROMA",
+        }
+
+        for token in self.tokens:
+            token["token"] = str(token.get("token", "")).strip().upper()
+            raw_network = str(token.get("network", "")).strip().upper()
+            token["network"] = network_map.get(raw_network, raw_network)
+            token["contract_address"] = str(token.get("contract_address", "")).strip().lower()
+
+        self._save_to_file()  # сохраняем нормализованную версию
     
     def _save_to_file(self):
         os.makedirs("data", exist_ok=True)

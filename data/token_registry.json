@@ -7392,6 +7392,20 @@
     "futures_pairs": []
   },
   {
+    "token": "TIA",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "TIA",
+    "contract_address": "",
+    "source": "Binance Public Coin Info",
+    "spot_pairs": [
+      "TIAUSDT",
+      "TIAUSDC",
+      "TIABUSD"
+    ],
+    "futures_pairs": []
+  },
+  {
     "token": "VTHO",
     "exchange": "Binance",
     "mode": "Spot",
@@ -28647,7 +28661,7 @@
     "token": "CHZ",
     "exchange": "OKX",
     "mode": "Spot",
-    "network": "CHILIZ",
+    "network": "CHILIZ CHAIN",
     "contract_address": "",
     "source": "OKX Public Currencies",
     "spot_pairs": [
@@ -31321,7 +31335,7 @@
     "token": "SPURS",
     "exchange": "OKX",
     "mode": "Spot",
-    "network": "CHILIZ",
+    "network": "CHILIZ CHAIN",
     "contract_address": "0x93d84ff2c5f5a5a3d7291b11af97679e75eeac92",
     "source": "OKX Public Currencies",
     "spot_pairs": [
@@ -40900,6 +40914,16 @@
     "source": "Bybit Futures API"
   },
   {
+    "token": "GOOGL",
+    "exchange": "Bybit",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "GOOGLUSDT",
+    "contract_type": "PERPETUAL",
+    "source": "Bybit Futures API"
+  },
+  {
     "token": "GPS",
     "exchange": "Bybit",
     "mode": "Futures",
@@ -41840,6 +41864,16 @@
     "source": "Bybit Futures API"
   },
   {
+    "token": "META",
+    "exchange": "Bybit",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "METAUSDT",
+    "contract_type": "PERPETUAL",
+    "source": "Bybit Futures API"
+  },
+  {
     "token": "METIS",
     "exchange": "Bybit",
     "mode": "Futures",
@@ -42056,6 +42090,16 @@
     "network": "",
     "contract_address": "",
     "futures_symbol": "MOVRUSDT",
+    "contract_type": "PERPETUAL",
+    "source": "Bybit Futures API"
+  },
+  {
+    "token": "MSFT",
+    "exchange": "Bybit",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "MSFTUSDT",
     "contract_type": "PERPETUAL",
     "source": "Bybit Futures API"
   },
@@ -43330,36 +43374,6 @@
     "source": "Bybit Futures API"
   },
   {
-    "token": "SOMI",
-    "exchange": "Bybit",
-    "mode": "Futures",
-    "network": "",
-    "contract_address": "",
-    "futures_symbol": "SOMIUSDT",
-    "contract_type": "PERPETUAL",
-    "source": "Bybit Futures API"
-  },
-  {
-    "token": "SONIC",
-    "exchange": "Bybit",
-    "mode": "Futures",
-    "network": "",
-    "contract_address": "",
-    "futures_symbol": "SONICUSDT",
-    "contract_type": "PERPETUAL",
-    "source": "Bybit Futures API"
-  },
-  {
-    "token": "SOON",
-    "exchange": "Bybit",
-    "mode": "Futures",
-    "network": "",
-    "contract_address": "",
-    "futures_symbol": "SOONUSDT",
-    "contract_type": "PERPETUAL",
-    "source": "Bybit Futures API"
-  },
-  {
     "token": "BTC",
     "exchange": "OKX",
     "mode": "Futures",
@@ -44110,6 +44124,16 @@
     "source": "OKX Futures API"
   },
   {
+    "token": "BMNR",
+    "exchange": "OKX",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "BMNR-USDT-SWAP",
+    "contract_type": "PERPETUAL",
+    "source": "OKX Futures API"
+  },
+  {
     "token": "BNB",
     "exchange": "OKX",
     "mode": "Futures",
@@ -44276,6 +44300,16 @@
     "network": "",
     "contract_address": "",
     "futures_symbol": "CORE-USDT-SWAP",
+    "contract_type": "PERPETUAL",
+    "source": "OKX Futures API"
+  },
+  {
+    "token": "COST",
+    "exchange": "OKX",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "COST-USDT-SWAP",
     "contract_type": "PERPETUAL",
     "source": "OKX Futures API"
   },
@@ -44690,6 +44724,16 @@
     "source": "OKX Futures API"
   },
   {
+    "token": "HIMS",
+    "exchange": "OKX",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "HIMS-USDT-SWAP",
+    "contract_type": "PERPETUAL",
+    "source": "OKX Futures API"
+  },
+  {
     "token": "HMSTR",
     "exchange": "OKX",
     "mode": "Futures",
@@ -44996,6 +45040,16 @@
     "network": "",
     "contract_address": "",
     "futures_symbol": "LIT-USDT-SWAP",
+    "contract_type": "PERPETUAL",
+    "source": "OKX Futures API"
+  },
+  {
+    "token": "LLY",
+    "exchange": "OKX",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "LLY-USDT-SWAP",
     "contract_type": "PERPETUAL",
     "source": "OKX Futures API"
   },
@@ -46150,6 +46204,16 @@
     "source": "OKX Futures API"
   },
   {
+    "token": "USAR",
+    "exchange": "OKX",
+    "mode": "Futures",
+    "network": "",
+    "contract_address": "",
+    "futures_symbol": "USAR-USDT-SWAP",
+    "contract_type": "PERPETUAL",
+    "source": "OKX Futures API"
+  },
+  {
     "token": "USDC",
     "exchange": "OKX",
     "mode": "Futures",
@@ -46484,9 +46548,11 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "enabled": true,
+        "enabled": false,
         "spot_pairs": [],
-        "futures_pairs": []
+        "futures_pairs": [
+          "0GUSDT"
+        ]
       },
       "Bybit": {
         "enabled": false,
@@ -46505,26 +46571,96 @@
     }
   },
   {
-    "token": "1000000BABYDOGE",
+    "token": "1000CAT",
     "type": "monitoring_config",
     "config": {
+      "Binance": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "1000CATUSDT"
+        ]
+      },
       "Bybit": {
         "enabled": false,
         "spot_pairs": [],
         "futures_pairs": [
-          "1000000BABYDOGEUSDT"
+          "1000CATUSDT"
         ]
       }
     }
   },
   {
-    "token": "1000000BOB",
+    "token": "1INCH",
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "enabled": true,
+        "enabled": false,
         "spot_pairs": [],
-        "futures_pairs": []
+        "futures_pairs": [
+          "1INCHUSDT"
+        ]
+      },
+      "Bybit": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "1INCHUSDT"
+        ]
+      },
+      "OKX": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "1INCH-USDT-SWAP"
+        ]
+      }
+    }
+  },
+  {
+    "token": "2Z",
+    "type": "monitoring_config",
+    "config": {
+      "Binance": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "2ZUSDT"
+        ]
+      },
+      "Bybit": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "2ZUSDT"
+        ]
+      },
+      "OKX": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "2Z-USDT-SWAP"
+        ]
+      }
+    }
+  },
+  {
+    "token": "1000RATS",
+    "type": "monitoring_config",
+    "config": {
+      "Binance": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "1000RATSUSDT"
+        ]
+      },
+      "Bybit": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "1000RATSUSDT"
+        ]
       }
     }
   }

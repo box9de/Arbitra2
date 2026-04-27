@@ -76,19 +76,24 @@ class MainWindow(QMainWindow):
             print(f"Ошибка обновления UI: {e}")
 
     def _on_tab_changed(self, index):
-        """Проверяем несохранённые изменения при смене вкладки"""
-        # Если переходим С Валидации на другую вкладку
-        if hasattr(self, 'validation_tab') and self.tabs.widget(index) != self.validation_tab:
-            if self.validation_tab.has_unsaved_changes():
-                reply = QMessageBox.question(
-                    self,
-                    "Несохранённые изменения",
-                    "Настройки карточек были изменены.\nСохранить перед переходом?",
-                    QMessageBox.Yes | QMessageBox.No,
-                    QMessageBox.Yes
-                )
-                if reply == QMessageBox.Yes:
-                    self.validation_tab.save_all_dirty()
+        current_widget = self.tabs.widget(index)
+
+        # Если перешли НА вкладку Валидация — загружаем карточки
+        if current_widget == self.validation_tab:
+            self.validation_tab.load_cards()   # ← только здесь!
+            return
+
+        # Если уходим С вкладки Валидация
+        if hasattr(self, 'validation_tab') and self.validation_tab.has_unsaved_changes():
+            reply = QMessageBox.question(
+                self,
+                "Несохранённые изменения",
+                "Настройки карточек были изменены.\nСохранить перед переходом?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.Yes
+            )
+            if reply == QMessageBox.Yes:
+                self.validation_tab.save_all_dirty()
 
     def open_api_keys_dialog(self):
         dialog = ApiKeysDialog(self)

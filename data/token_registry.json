@@ -2562,6 +2562,20 @@
     "futures_pairs": []
   },
   {
+    "token": "EGLD",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "EGLD",
+    "contract_address": "",
+    "source": "Binance Public Coin Info",
+    "spot_pairs": [
+      "EGLDUSDT",
+      "EGLDUSDC",
+      "EGLDBUSD"
+    ],
+    "futures_pairs": []
+  },
+  {
     "token": "PLUME",
     "exchange": "Binance",
     "mode": "Spot",
@@ -9068,6 +9082,20 @@
       "COWUSDT",
       "COWUSDC",
       "COWBUSD"
+    ],
+    "futures_pairs": []
+  },
+  {
+    "token": "GLMR",
+    "exchange": "Binance",
+    "mode": "Spot",
+    "network": "GLMR",
+    "contract_address": "",
+    "source": "Binance Public Coin Info",
+    "spot_pairs": [
+      "GLMRUSDT",
+      "GLMRUSDC",
+      "GLMRBUSD"
     ],
     "futures_pairs": []
   },
@@ -28619,7 +28647,7 @@
     "token": "CHZ",
     "exchange": "OKX",
     "mode": "Spot",
-    "network": "CHILIZ CHAIN",
+    "network": "CHILIZ",
     "contract_address": "",
     "source": "OKX Public Currencies",
     "spot_pairs": [
@@ -31293,7 +31321,7 @@
     "token": "SPURS",
     "exchange": "OKX",
     "mode": "Spot",
-    "network": "CHILIZ CHAIN",
+    "network": "CHILIZ",
     "contract_address": "0x93d84ff2c5f5a5a3d7291b11af97679e75eeac92",
     "source": "OKX Public Currencies",
     "spot_pairs": [
@@ -46450,5 +46478,54 @@
     "futures_symbol": "XPD-USDT-SWAP",
     "contract_type": "PERPETUAL",
     "source": "OKX Futures API"
+  },
+  {
+    "token": "0G",
+    "type": "monitoring_config",
+    "config": {
+      "Binance": {
+        "enabled": true,
+        "spot_pairs": [],
+        "futures_pairs": []
+      },
+      "Bybit": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "0GUSDT"
+        ]
+      },
+      "OKX": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "0G-USDT-SWAP"
+        ]
+      }
+    }
+  },
+  {
+    "token": "1000000BABYDOGE",
+    "type": "monitoring_config",
+    "config": {
+      "Bybit": {
+        "enabled": false,
+        "spot_pairs": [],
+        "futures_pairs": [
+          "1000000BABYDOGEUSDT"
+        ]
+      }
+    }
+  },
+  {
+    "token": "1000000BOB",
+    "type": "monitoring_config",
+    "config": {
+      "Binance": {
+        "enabled": true,
+        "spot_pairs": [],
+        "futures_pairs": []
+      }
+    }
   }
 ]

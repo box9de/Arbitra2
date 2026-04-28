@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QScrollArea, QFrame,
-    QLabel, QLineEdit, QPushButton, QCheckBox, QMessageBox,
-    QTableWidget, QTableWidgetItem, QHeaderView, QApplication
+    QLabel, QLineEdit, QPushButton, QCheckBox, QMessageBox, 
+    QTableWidget, QTableWidgetItem, QHeaderView, QApplication, QSplitter
 )
 from PySide6.QtCore import Qt, QTimer
 from collections import defaultdict
@@ -13,7 +13,6 @@ class ValidationTab(QWidget):
         super().__init__()
         self.registry = token_registry
         self.cards = []
-        self.max_cards = 80
         self._loaded = False
         self._dirty_cards = set()
         self.summary_table = None
@@ -56,26 +55,28 @@ class ValidationTab(QWidget):
         self.cards_layout.setContentsMargins(8, 8, 8, 8)
 
         self.scroll.setWidget(self.cards_widget)
-        layout.addWidget(self.scroll)
 
         # ====================== СВОДНАЯ ТАБЛИЦА ======================
         self.summary_table = QTableWidget()
         self.summary_table.setColumnCount(7)
-        self.summary_table.setHorizontalHeaderLabels([
-            "Токен", "Binance", "Bybit", "OKX", "Совпадение", "Выбрано", "Перейти"
-        ])
+        self.summary_table.setHorizontalHeaderLabels(["Токен", "Binance", "Bybit", "OKX", "Совпадение", "Выбрано", "Перейти"])
+
         header = self.summary_table.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(1, QHeaderView.Stretch)
-        header.setSectionResizeMode(2, QHeaderView.Stretch)
-        header.setSectionResizeMode(3, QHeaderView.Stretch)
-        header.setSectionResizeMode(4, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(6, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(QHeaderView.Interactive)
+        header.sectionClicked.connect(self._sort_table)
+        self.summary_table.sortItems(4, Qt.DescendingOrder)   # сортировка по умолчанию
+        self.summary_table.resizeColumnsToContents()
 
         self.summary_table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.summary_table.cellDoubleClicked.connect(self._on_table_row_double_click)
-        layout.addWidget(self.summary_table)
+
+        # ====================== QSplitter (пункт 4) ======================
+        self.splitter = QSplitter(Qt.Vertical)
+        self.splitter.addWidget(self.scroll)          # карточки сверху
+        self.splitter.addWidget(self.summary_table)   # таблица снизу
+        self.splitter.setSizes([int(self.height() * 0.75), int(self.height() * 0.25)])  # 75% / 25%
+
+        layout.addWidget(self.splitter)
 
         QTimer.singleShot(100, self.load_cards)
 
@@ -104,7 +105,7 @@ class ValidationTab(QWidget):
 
         sorted_tokens = sorted(grouped.keys())
         total = len(sorted_tokens)
-        to_show = sorted_tokens[:self.max_cards]
+        to_show = sorted_tokens                    # ← теперь грузим ВСЕ токены
 
         created = 0
         for token_name in to_show:
@@ -155,6 +156,17 @@ class ValidationTab(QWidget):
             by_exchange[e.get("exchange", "Unknown")].append(e)
 
         saved_config = self.registry.get_monitoring_config(token_name)
+
+        # === НОВОЕ: если настроек нет — создаём дефолтную запись (все галочки выключены) ===
+        if not saved_config:
+            default_config = {
+                "Binance": {"enabled": False, "spot_pairs": [], "futures_pairs": []},
+                "Bybit":   {"enabled": False, "spot_pairs": [], "futures_pairs": []},
+                "OKX":     {"enabled": False, "spot_pairs": [], "futures_pairs": []}
+            }
+            self.registry.save_monitoring_config(token_name, default_config)
+            saved_config = self.registry.get_monitoring_config(token_name)
+        # =================================================================================
 
         for exchange, ex_entries in by_exchange.items():
             box = QFrame()
@@ -213,7 +225,7 @@ class ValidationTab(QWidget):
                 box_layout.addLayout(h)
 
             enable_cb = QCheckBox(f"Включить {exchange} в мониторинг")
-            enable_cb.setChecked(saved_config.get(exchange, {}).get("enabled", True))
+            enable_cb.setChecked(saved_config.get(exchange, {}).get("enabled", False))  # False по умолчанию
             enable_cb.setProperty("token_name", token_name)
             enable_cb.setProperty("exchange", exchange)
             enable_cb.stateChanged.connect(lambda: self._on_change(token_name))
@@ -351,6 +363,15 @@ class ValidationTab(QWidget):
 
     def has_unsaved_changes(self) -> bool:
         return len(self._dirty_cards) > 0
+    
+    def _sort_table(self, column: int):
+        """Сортировка по клику на заголовок колонки"""
+        if not hasattr(self, '_sort_order'):
+            self._sort_order = Qt.DescendingOrder
+
+        self.summary_table.sortItems(column, self._sort_order)
+        # Переключаем порядок при повторном клике
+        self._sort_order = Qt.DescendingOrder if self._sort_order == Qt.AscendingOrder else Qt.AscendingOrder
 
     def filter_cards(self):
         text = self.search_edit.text().strip().lower()

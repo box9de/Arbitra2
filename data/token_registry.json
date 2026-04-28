@@ -46548,23 +46548,13 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "enabled": false,
-        "spot_pairs": [],
         "futures_pairs": []
       },
       "Bybit": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "0GUSDT"
-        ]
+        "futures_pairs": []
       },
       "OKX": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "0G-USDT-SWAP"
-        ]
+        "futures_pairs": []
       }
     }
   },
@@ -46573,18 +46563,10 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "1000CATUSDT"
-        ]
+        "futures_pairs": []
       },
       "Bybit": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "1000CATUSDT"
-        ]
+        "futures_pairs": []
       }
     }
   },
@@ -46614,25 +46596,13 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "2ZUSDT"
-        ]
+        "futures_pairs": []
       },
       "Bybit": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "2ZUSDT"
-        ]
+        "futures_pairs": []
       },
       "OKX": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": [
-          "2Z-USDT-SWAP"
-        ]
+        "futures_pairs": []
       }
     }
   },
@@ -46650,9 +46620,7 @@
       "Bybit": {
         "enabled": false,
         "spot_pairs": [],
-        "futures_pairs": [
-          "1000RATSUSDT"
-        ]
+        "futures_pairs": []
       }
     }
   },
@@ -46705,9 +46673,7 @@
       "Bybit": {
         "enabled": false,
         "spot_pairs": [],
-        "futures_pairs": [
-          "1000000BABYDOGEUSDT"
-        ]
+        "futures_pairs": []
       }
     }
   },
@@ -46742,11 +46708,9 @@
         "futures_pairs": []
       },
       "Bybit": {
-        "enabled": true,
+        "enabled": false,
         "spot_pairs": [],
-        "futures_pairs": [
-          "ACUUSDT"
-        ]
+        "futures_pairs": []
       },
       "OKX": {
         "enabled": false,

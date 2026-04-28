@@ -76,44 +76,17 @@ class MainWindow(QMainWindow):
             print(f"Ошибка обновления UI: {e}")
 
     def _on_tab_changed(self, index):
-        current_widget = self.tabs.widget(index)
-
-        # Если перешли НА вкладку Валидация — загружаем карточки
-        if current_widget == self.validation_tab:
-            self.validation_tab.load_cards()   # ← только здесь!
-            return
-
-        # Если уходим С вкладки Валидация
-        if hasattr(self, 'validation_tab') and self.validation_tab.has_unsaved_changes():
-            reply = QMessageBox.question(
-                self,
-                "Несохранённые изменения",
-                "Настройки карточек были изменены.\nСохранить перед переходом?",
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.Yes
-            )
-            if reply == QMessageBox.Yes:
-                self.validation_tab.save_all_dirty()
+        """Просто переключаем вкладки без лишних диалогов"""
+        if self.tabs.widget(index) == self.validation_tab:
+            self.validation_tab.load_cards()
 
     def open_api_keys_dialog(self):
         dialog = ApiKeysDialog(self)
         dialog.exec()
 
     def closeEvent(self, event):
-        """При закрытии программы спрашиваем сохранение"""
-        if hasattr(self, 'validation_tab') and self.validation_tab.has_unsaved_changes():
-            reply = QMessageBox.question(
-                self,
-                "Несохранённые изменения",
-                "Есть несохранённые настройки в Валидации.\nСохранить перед выходом?",
-                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
-                QMessageBox.Yes
-            )
-            if reply == QMessageBox.Yes:
-                self.validation_tab.save_all_dirty()
-            elif reply == QMessageBox.Cancel:
-                event.ignore()
-                return
+        """Закрытие окна без лишних диалогов"""
+        # Можно добавить сохранение при закрытии позже, если захочешь
         event.accept()
 
 

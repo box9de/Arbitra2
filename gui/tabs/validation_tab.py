@@ -14,7 +14,6 @@ class ValidationTab(QWidget):
         self.registry = token_registry
         self.cards = []
         self._loaded = False
-        self._dirty_cards = set()
         self.summary_table = None
         self.init_ui()
 
@@ -95,7 +94,6 @@ class ValidationTab(QWidget):
             self.cards_layout.takeAt(0)
 
         self.cards.clear()
-        self._dirty_cards.clear()
 
         data = self.registry.get_all_tokens()
         grouped = defaultdict(list)
@@ -197,12 +195,12 @@ class ValidationTab(QWidget):
                 saved_spot = saved_config.get(exchange, {}).get("spot_pairs", spot_pairs)
                 for pair in spot_pairs:
                     cb = QCheckBox(pair)
+                    cb.stateChanged.connect(lambda: save_btn.setEnabled(True))
                     cb.setChecked(pair in saved_spot)
                     cb.setProperty("pair", pair)
                     cb.setProperty("type", "spot")
                     cb.setProperty("token_name", token_name)
                     cb.setProperty("exchange", exchange)
-                    cb.stateChanged.connect(lambda: self._on_change(token_name))
                     h.addWidget(cb)
                 box_layout.addLayout(h)
 
@@ -215,136 +213,95 @@ class ValidationTab(QWidget):
                 saved_fut = saved_config.get(exchange, {}).get("futures_pairs", futures_pairs)
                 for pair in futures_pairs:
                     cb = QCheckBox(pair)
+                    cb.stateChanged.connect(lambda: save_btn.setEnabled(True))
                     cb.setChecked(pair in saved_fut)
                     cb.setProperty("pair", pair)
                     cb.setProperty("type", "futures")
                     cb.setProperty("token_name", token_name)
                     cb.setProperty("exchange", exchange)
-                    cb.stateChanged.connect(lambda: self._on_change(token_name))
                     h.addWidget(cb)
                 box_layout.addLayout(h)
 
             enable_cb = QCheckBox(f"Включить {exchange} в мониторинг")
+            enable_cb.stateChanged.connect(lambda: save_btn.setEnabled(True))
             enable_cb.setChecked(saved_config.get(exchange, {}).get("enabled", False))  # False по умолчанию
             enable_cb.setProperty("token_name", token_name)
             enable_cb.setProperty("exchange", exchange)
-            enable_cb.stateChanged.connect(lambda: self._on_change(token_name))
             box_layout.addWidget(enable_cb)
 
             main_layout.addWidget(box)
 
         return card
 
-    def _on_change(self, token_name: str):
-        if token_name not in self._dirty_cards:
-            self._dirty_cards.add(token_name)
-            for card in self.cards:
-                if card.property("token_name") == token_name:
-                    for btn in card.findChildren(QPushButton):
-                        if btn.text() == "Сохранить":
-                            btn.setEnabled(True)
-                            break
-                    break
-        self.update_summary_table()
-
     def _save_single_card(self, token_name: str):
-        config = {}
+        """Сохраняет настройки одной карточки по имени токена"""
+        if not token_name:
+            return
 
-        for card in self.cards:
-            if card.property("token_name") == token_name:
-                for cb in card.findChildren(QCheckBox):
-                    exchange = cb.property("exchange")
-                    if not exchange:
-                        continue
-                    if exchange not in config:
-                        config[exchange] = {"enabled": False, "spot_pairs": [], "futures_pairs": []}
-
-                    if "Включить" in cb.text() and "в мониторинг" in cb.text():
-                        config[exchange]["enabled"] = cb.isChecked()
-                    elif cb.property("type") == "spot" and cb.isChecked():
-                        config[exchange]["spot_pairs"].append(cb.property("pair"))
-                    elif cb.property("type") == "futures" and cb.isChecked():
-                        config[exchange]["futures_pairs"].append(cb.property("pair"))
+        # Ищем карточку по токену (чтобы обновить кнопку "Сохранить")
+        card = None
+        for c in self.cards:
+            if c.property("token_name") == token_name:
+                card = c
                 break
+
+        config = {}
+        # Собираем настройки из всех чекбоксов карточки
+        for cb in card.findChildren(QCheckBox) if card else []:
+            ex = cb.property("exchange")
+            if not ex:
+                continue
+
+            if cb.property("type") == "enable":
+                config.setdefault(ex, {})["enabled"] = cb.isChecked()
+            elif cb.property("type") == "spot":
+                config.setdefault(ex, {}).setdefault("spot_pairs", [])
+                if cb.isChecked() and cb.property("pair"):
+                    config[ex]["spot_pairs"].append(cb.property("pair"))
+            elif cb.property("type") == "futures":
+                config.setdefault(ex, {}).setdefault("futures_pairs", [])
+                if cb.isChecked() and cb.property("pair"):
+                    config[ex]["futures_pairs"].append(cb.property("pair"))
 
         self.registry.save_monitoring_config(token_name, config)
-        self._dirty_cards.discard(token_name)
 
-        new_config = self.registry.get_monitoring_config(token_name)
+        # Деактивируем кнопку "Сохранить"
+        if card:
+            for btn in card.findChildren(QPushButton):
+                if btn.text() == "Сохранить":
+                    btn.setEnabled(False)
+                    break
 
-        for card in self.cards:
-            if card.property("token_name") == token_name:
-                for btn in card.findChildren(QPushButton):
-                    if btn.text() == "Сохранить":
-                        btn.setEnabled(False)
-                        break
-                for cb in card.findChildren(QCheckBox):
-                    exchange = cb.property("exchange")
-                    if not exchange:
-                        continue
-                    ex_cfg = new_config.get(exchange, {})
-                    if "Включить" in cb.text() and "в мониторинг" in cb.text():
-                        cb.setChecked(ex_cfg.get("enabled", True))
-                    elif cb.property("type") == "spot":
-                        cb.setChecked(cb.property("pair") in ex_cfg.get("spot_pairs", []))
-                    elif cb.property("type") == "futures":
-                        cb.setChecked(cb.property("pair") in ex_cfg.get("futures_pairs", []))
-                break
-
-        QMessageBox.information(self, "Сохранено", f"Настройки для {token_name} успешно сохранены.")
+        QMessageBox.information(self, "Сохранено", f"Настройки для {token_name} сохранены.")
         self.update_summary_table()
 
     def update_summary_table(self):
-        """Обновляет сводную таблицу"""
-        if not self.summary_table:
-            return
+        """Обновляет нижнюю таблицу"""
         self.summary_table.setRowCount(0)
-
         for card in self.cards:
             token_name = card.property("token_name")
             if not token_name:
                 continue
-
             config = self.registry.get_monitoring_config(token_name)
-
-            # Собираем биржи, у которых есть Spot с адресом
-            spot_exchanges = []
-            for exchange in ["Binance", "Bybit", "OKX"]:
-                ex_cfg = config.get(exchange, {})
-                if ex_cfg.get("enabled") is not None:  # биржа присутствует
-                    spot_exchanges.append(exchange)
-
-            total_spot = len(spot_exchanges)                    # Y
-            connected = total_spot                              # X (все связанные, если >1)
+            
+            enabled = 0
+            total = 0
+            for ex in ["Binance", "Bybit", "OKX"]:
+                ex_cfg = config.get(ex, {}) if isinstance(config, dict) else {}
+                if ex_cfg.get("enabled") is not None:   # защищаем от str
+                    total += 1
+                    if ex_cfg.get("enabled", False):
+                        enabled += 1
 
             row = self.summary_table.rowCount()
             self.summary_table.insertRow(row)
-
             self.summary_table.setItem(row, 0, QTableWidgetItem(token_name))
-
-            # Binance
-            bin_cfg = config.get("Binance", {})
-            self.summary_table.setItem(row, 1, QTableWidgetItem("✓" if bin_cfg.get("enabled") else "—"))
-
-            # Bybit
-            byb_cfg = config.get("Bybit", {})
-            self.summary_table.setItem(row, 2, QTableWidgetItem("✓" if byb_cfg.get("enabled") else "—"))
-
-            # OKX
-            okx_cfg = config.get("OKX", {})
-            self.summary_table.setItem(row, 3, QTableWidgetItem("✓" if okx_cfg.get("enabled") else "—"))
-
-            # Совпадение
-            self.summary_table.setItem(row, 4, QTableWidgetItem(f"{connected}/{total_spot}"))
-
-            # Выбрано
-            selected = sum(1 for cfg in [bin_cfg, byb_cfg, okx_cfg] if cfg.get("enabled"))
-            self.summary_table.setItem(row, 5, QTableWidgetItem(str(selected)))
-
-            # Перейти
-            btn = QPushButton("Перейти")
-            btn.clicked.connect(lambda checked, t=token_name: self._scroll_to_card(t))
-            self.summary_table.setCellWidget(row, 6, btn)
+            self.summary_table.setItem(row, 1, QTableWidgetItem("●" if config.get("Binance", {}).get("enabled") else "○"))
+            self.summary_table.setItem(row, 2, QTableWidgetItem("●" if config.get("Bybit", {}).get("enabled") else "○"))
+            self.summary_table.setItem(row, 3, QTableWidgetItem("●" if config.get("OKX", {}).get("enabled") else "○"))
+            self.summary_table.setItem(row, 4, QTableWidgetItem(f"{enabled}/{total}"))
+            self.summary_table.setItem(row, 5, QTableWidgetItem(f"{enabled}/{total}"))
+            self.summary_table.setItem(row, 6, QTableWidgetItem("Перейти"))
 
     def _scroll_to_card(self, token_name: str):
         for card in self.cards:
@@ -360,9 +317,6 @@ class ValidationTab(QWidget):
     def save_all_dirty(self):
         for token in list(self._dirty_cards):
             self._save_single_card(token)
-
-    def has_unsaved_changes(self) -> bool:
-        return len(self._dirty_cards) > 0
     
     def _sort_table(self, column: int):
         """Сортировка по клику на заголовок колонки"""

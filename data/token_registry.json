@@ -46548,10 +46548,20 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "futures_pairs": []
+        "spot_pairs": [
+          "0GUSDT"
+        ],
+        "futures_pairs": [
+          "0GUSDT"
+        ]
       },
       "Bybit": {
-        "futures_pairs": []
+        "spot_pairs": [
+          "0GUSDT"
+        ],
+        "futures_pairs": [
+          "0GUSDT"
+        ]
       },
       "OKX": {
         "futures_pairs": []
@@ -46563,6 +46573,7 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
+        "spot_pairs": [],
         "futures_pairs": []
       },
       "Bybit": {
@@ -46596,12 +46607,15 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
+        "spot_pairs": [],
         "futures_pairs": []
       },
       "Bybit": {
+        "spot_pairs": [],
         "futures_pairs": []
       },
       "OKX": {
+        "spot_pairs": [],
         "futures_pairs": []
       }
     }
@@ -50171,19 +50185,28 @@
     "type": "monitoring_config",
     "config": {
       "Binance": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": []
+        "spot_pairs": [
+          "BICOUSDT"
+        ],
+        "futures_pairs": [
+          "BICOUSDT"
+        ]
       },
       "Bybit": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": []
+        "spot_pairs": [
+          "BICOUSDT"
+        ],
+        "futures_pairs": [
+          "BICOUSDT"
+        ]
       },
       "OKX": {
-        "enabled": false,
-        "spot_pairs": [],
-        "futures_pairs": []
+        "spot_pairs": [
+          "BICOUSDT"
+        ],
+        "futures_pairs": [
+          "BICO-USDT-SWAP"
+        ]
       }
     }
   },

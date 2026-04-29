@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QScrollArea, QFrame,
     QLabel, QLineEdit, QPushButton, QCheckBox, QMessageBox, 
-    QTableWidget, QTableWidgetItem, QHeaderView, QApplication, QSplitter
+    QTableWidget, QTableWidgetItem, QHeaderView, QApplication, QSplitter,
+    QComboBox                                      # ← ДОБАВЛЕНО
 )
 from PySide6.QtCore import Qt, QTimer
 from collections import defaultdict
@@ -22,9 +23,29 @@ class ValidationTab(QWidget):
         layout.setSpacing(8)
         layout.setContentsMargins(8, 8, 8, 8)
 
+        # ====================== ЗАГОЛОВОК + ФИЛЬТР ======================
+        header_layout = QHBoxLayout()
+
         self.header = QLabel("Валидация сопоставления токенов (0/0)")
         self.header.setStyleSheet("font-size: 15px; font-weight: bold;")
-        layout.addWidget(self.header)
+        header_layout.addWidget(self.header)
+
+        header_layout.addStretch()
+
+        # === ФИЛЬТР ПО СОСТОЯНИЮ МОНИТОРИНГА (Вариант 1) ===
+        self.filter_combo = QComboBox()
+        self.filter_combo.addItems([
+            "Все токены",
+            "Отобранные в мониторинг",
+            "Необработанные"
+        ])
+        self.filter_combo.setCurrentIndex(0)  # Все токены по умолчанию
+        self.filter_combo.currentIndexChanged.connect(self.filter_cards)
+        header_layout.addWidget(self.filter_combo)
+        # =====================================================
+
+        layout.addLayout(header_layout)
+        # ============================================================
 
         search_layout = QHBoxLayout()
         search_label = QLabel("Поиск:")
@@ -57,72 +78,59 @@ class ValidationTab(QWidget):
 
         # ====================== СВОДНАЯ ТАБЛИЦА ======================
         self.summary_table = QTableWidget()
-        self.summary_table.setColumnCount(7)
-        self.summary_table.setHorizontalHeaderLabels(["Токен", "Binance", "Bybit", "OKX", "Совпадение", "Выбрано", "Перейти"])
+        self.summary_table.setColumnCount(8)  # +1 колонка «Мониторинг»
+        self.summary_table.setHorizontalHeaderLabels(
+            ["Токен", "Binance", "Bybit", "OKX", "Совпадение", "Выбрано", "Мониторинг", "Перейти"]
+        )
 
         header = self.summary_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Interactive)
         header.sectionClicked.connect(self._sort_table)
-        self.summary_table.sortItems(4, Qt.DescendingOrder)   # сортировка по умолчанию
+        self.summary_table.sortItems(4, Qt.DescendingOrder)
         self.summary_table.resizeColumnsToContents()
 
         self.summary_table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.summary_table.cellDoubleClicked.connect(self._on_table_row_double_click)
 
-        # ====================== QSplitter (пункт 4) ======================
+        # ====================== QSplitter ======================
         self.splitter = QSplitter(Qt.Vertical)
-        self.splitter.addWidget(self.scroll)          # карточки сверху
-        self.splitter.addWidget(self.summary_table)   # таблица снизу
-        self.splitter.setSizes([int(self.height() * 0.75), int(self.height() * 0.25)])  # 75% / 25%
+        self.splitter.addWidget(self.scroll)
+        self.splitter.addWidget(self.summary_table)
+        self.splitter.setSizes([int(self.height() * 0.75), int(self.height() * 0.25)])
 
         layout.addWidget(self.splitter)
 
         QTimer.singleShot(100, self.load_cards)
 
     def load_cards(self):
-        if self._loaded:
-            return
-        self._loaded = True
-
-        print("[ValidationTab] Начинаем загрузку карточек...")
-
+        """Полная перезагрузка всех карточек + применение текущего фильтра"""
+        # Очищаем предыдущие карточки
         for i in reversed(range(self.cards_layout.count())):
-            item = self.cards_layout.itemAt(i)
-            if item and item.widget():
-                item.widget().deleteLater()
-        while self.cards_layout.count():
-            self.cards_layout.takeAt(0)
+            widget = self.cards_layout.itemAt(i).widget()
+            if widget:
+                widget.setParent(None)
+                widget.deleteLater()
 
-        self.cards.clear()
+        self.cards = []
 
-        data = self.registry.get_all_tokens()
+        # Загружаем все токены из реестра
+        all_entries = self.registry.get_all_tokens()
+
+        # Группируем по токену
         grouped = defaultdict(list)
-        for entry in data:
-            if entry.get("mode") in ("Spot", "Futures"):
-                grouped[entry.get("token", "")].append(entry)
+        for entry in all_entries:
+            token = entry.get("token")
+            if token:
+                grouped[token].append(entry)
 
-        sorted_tokens = sorted(grouped.keys())
-        total = len(sorted_tokens)
-        to_show = sorted_tokens                    # ← теперь грузим ВСЕ токены
+        # Создаём карточки
+        for token_name, entries in sorted(grouped.items()):
+            card = self.create_card(token_name, entries)
+            self.cards.append(card)
+            self.cards_layout.addWidget(card)
 
-        created = 0
-        for token_name in to_show:
-            try:
-                card = self.create_card(token_name, grouped[token_name])
-                self.cards_layout.addWidget(card)
-                self.cards.append(card)
-                created += 1
-
-                if created % 20 == 0 or created == len(to_show):
-                    self.header.setText(f"Валидация сопоставления токенов ({created}/{total})")
-                    QApplication.processEvents()
-            except Exception as e:
-                print(f"[ERROR create_card] {token_name}: {e}")
-
-        self.header.setText(f"Валидация сопоставления токенов ({created}/{total})")
-        print(f"[ValidationTab] Загрузка завершена: {created} карточек из {total}")
-
-        self.update_summary_table()
+        # Сразу применяем текущий фильтр (поиск + фильтр по «Мониторинг»)
+        self.filter_cards()
 
     def create_card(self, token_name: str, entries: list):
         card = QFrame()
@@ -134,21 +142,7 @@ class ValidationTab(QWidget):
         main_layout.setSpacing(6)
         main_layout.setContentsMargins(10, 10, 10, 10)
 
-        header = QHBoxLayout()
-        title = QLabel(f"<b>{token_name}</b>")
-        title.setStyleSheet("font-size: 14px;")
-        header.addWidget(title)
-
-        save_btn = QPushButton("Сохранить")
-        save_btn.setFixedWidth(90)
-        save_btn.setEnabled(False)
-        save_btn.setProperty("token_name", token_name)
-        save_btn.clicked.connect(lambda: self._save_single_card(token_name))
-        header.addStretch()
-        header.addWidget(save_btn)
-
-        main_layout.addLayout(header)
-
+        # ====================== РАСЧЁТ КОНФИГА В САМОМ НАЧАЛЕ ======================
         by_exchange = defaultdict(list)
         for e in entries:
             by_exchange[e.get("exchange", "Unknown")].append(e)
@@ -160,11 +154,38 @@ class ValidationTab(QWidget):
             default_config = {
                 "Binance": {"enabled": False, "spot_pairs": [], "futures_pairs": []},
                 "Bybit":   {"enabled": False, "spot_pairs": [], "futures_pairs": []},
-                "OKX":     {"enabled": False, "spot_pairs": [], "futures_pairs": []}
+                "OKX":     {"enabled": False, "spot_pairs": [], "futures_pairs": []},
+                "monitoring_enabled": False
             }
             self.registry.save_monitoring_config(token_name, default_config)
             saved_config = self.registry.get_monitoring_config(token_name)
         # =================================================================================
+        # ============================================================================
+
+        header = QHBoxLayout()
+        title = QLabel(f"<b>{token_name}</b>")
+        title.setStyleSheet("font-size: 14px;")
+        header.addWidget(title)
+
+        save_btn = QPushButton("Сохранить")
+        save_btn.setFixedWidth(90)
+        save_btn.setEnabled(False)
+        save_btn.setProperty("token_name", token_name)
+        save_btn.clicked.connect(lambda: self._save_single_card(token_name))
+
+        # === ЧЕКБОКС «Мониторинг» возле кнопки Сохранить ===
+        monitoring_cb = QCheckBox("Мониторинг")
+        monitoring_cb.setChecked(saved_config.get("monitoring_enabled", False))
+        monitoring_cb.setProperty("token_name", token_name)
+        monitoring_cb.setProperty("type", "monitoring")
+        monitoring_cb.stateChanged.connect(lambda: save_btn.setEnabled(True))
+        # =====================================================
+
+        header.addStretch()
+        header.addWidget(monitoring_cb)
+        header.addWidget(save_btn)
+
+        main_layout.addLayout(header)
 
         for exchange, ex_entries in by_exchange.items():
             box = QFrame()
@@ -190,8 +211,7 @@ class ValidationTab(QWidget):
             for e in ex_entries:
                 if e.get("mode") == "Spot":
                     spot_pairs.extend(e.get("spot_pairs", []))
-            spot_pairs = list(dict.fromkeys(spot_pairs))  # убираем дубли
-            # ================================================
+            spot_pairs = list(dict.fromkeys(spot_pairs))
 
             if spot_pairs:
                 box_layout.addWidget(QLabel("<b>Spot:</b>"))
@@ -217,7 +237,6 @@ class ValidationTab(QWidget):
                     if symbol:
                         futures_pairs.append(symbol)
             futures_pairs = list(dict.fromkeys(futures_pairs))
-            # ===================================================
 
             if futures_pairs:
                 box_layout.addWidget(QLabel("<b>Futures:</b>"))
@@ -238,9 +257,10 @@ class ValidationTab(QWidget):
 
             enable_cb = QCheckBox(f"Включить {exchange} в мониторинг")
             enable_cb.stateChanged.connect(lambda: save_btn.setEnabled(True))
-            enable_cb.setChecked(saved_config.get(exchange, {}).get("enabled", False))  # False по умолчанию
+            enable_cb.setChecked(saved_config.get(exchange, {}).get("enabled", False))
             enable_cb.setProperty("token_name", token_name)
             enable_cb.setProperty("exchange", exchange)
+            enable_cb.setProperty("type", "enable")
             box_layout.addWidget(enable_cb)
 
             main_layout.addWidget(box)
@@ -248,11 +268,10 @@ class ValidationTab(QWidget):
         return card
 
     def _save_single_card(self, token_name: str):
-        """Сохраняет настройки одной карточки"""
+        """Сохраняет настройки одной карточки (включая новый чекбокс «Мониторинг»)"""
         if not token_name:
             return
 
-        # Ищем карточку по имени токена
         card = None
         for c in self.cards:
             if c.property("token_name") == token_name:
@@ -262,9 +281,14 @@ class ValidationTab(QWidget):
         if not card:
             return
 
-        # Собираем актуальные настройки из всех чекбоксов
         config = {}
+        monitoring_enabled = False
+
         for cb in card.findChildren(QCheckBox):
+            if cb.property("type") == "monitoring":
+                monitoring_enabled = cb.isChecked()
+                continue
+
             ex = cb.property("exchange")
             if not ex:
                 continue
@@ -280,18 +304,19 @@ class ValidationTab(QWidget):
                 if cb.isChecked() and cb.property("pair"):
                     config[ex]["futures_pairs"].append(cb.property("pair"))
 
-        # Сохраняем в реестр
+        # === Главное исправление: сохраняем топ-левел флаг ===
+        config["monitoring_enabled"] = monitoring_enabled
+        # =====================================================
+
         self.registry.save_monitoring_config(token_name, config)
 
-        # Деактивируем кнопку "Сохранить"
+        # Деактивируем кнопку
         for btn in card.findChildren(QPushButton):
             if btn.text() == "Сохранить":
                 btn.setEnabled(False)
                 break
 
-        # Обновляем таблицу
         self.update_summary_table()
-
         QMessageBox.information(self, "Сохранено", f"Настройки для {token_name} сохранены.")
 
     def update_summary_table(self):
@@ -353,13 +378,20 @@ class ValidationTab(QWidget):
 
             row = self.summary_table.rowCount()
             self.summary_table.insertRow(row)
+
             self.summary_table.setItem(row, 0, QTableWidgetItem(token_name))
             self.summary_table.setItem(row, 1, QTableWidgetItem("●" if exchange_spots.get("Binance") else "○"))
             self.summary_table.setItem(row, 2, QTableWidgetItem("●" if exchange_spots.get("Bybit") else "○"))
             self.summary_table.setItem(row, 3, QTableWidgetItem("●" if exchange_spots.get("OKX") else "○"))
             self.summary_table.setItem(row, 4, QTableWidgetItem(f"{x}/{y}"))
-            self.summary_table.setItem(row, 5, QTableWidgetItem(str(chosen)))   # ← исправлено
-            self.summary_table.setItem(row, 6, QTableWidgetItem("Перейти"))
+            self.summary_table.setItem(row, 5, QTableWidgetItem(str(chosen)))
+
+            # === ИСПРАВЛЕНО: колонка «Мониторинг» ===
+            mon_status = "+" if config.get("monitoring_enabled", False) else "-"
+            self.summary_table.setItem(row, 6, QTableWidgetItem(mon_status))
+            # ========================================
+
+            self.summary_table.setItem(row, 7, QTableWidgetItem("Перейти"))
 
         self.summary_table.sortItems(4, Qt.DescendingOrder)
 
@@ -388,8 +420,40 @@ class ValidationTab(QWidget):
         self._sort_order = Qt.DescendingOrder if self._sort_order == Qt.AscendingOrder else Qt.AscendingOrder
 
     def filter_cards(self):
-        text = self.search_edit.text().strip().lower()
+        """Применяет поиск + фильтр по состоянию «Мониторинг»"""
+        search_text = self.search_edit.text().strip().lower()
+        filter_mode = self.filter_combo.currentText()
+
+        visible_count = 0
+        total_count = len(self.cards)
+
         for card in self.cards:
-            token = card.property("token_name") or ""
-            card.setVisible(text in token.lower())
+            token_name = card.property("token_name")
+            if not token_name:
+                card.setVisible(False)
+                continue
+
+            # Поиск по токену
+            if search_text and search_text not in token_name.lower():
+                card.setVisible(False)
+                continue
+
+            # Фильтр по мониторингу
+            config = self.registry.get_monitoring_config(token_name)
+            is_monitored = config.get("monitoring_enabled", False)
+
+            if filter_mode == "Отобранные в мониторинг" and not is_monitored:
+                card.setVisible(False)
+                continue
+            elif filter_mode == "Необработанные" and is_monitored:
+                card.setVisible(False)
+                continue
+            # "Все токены" — показываем всё
+
+            card.setVisible(True)
+            visible_count += 1
+
+        # Обновляем заголовок
+        self.header.setText(f"Валидация сопоставления токенов ({visible_count}/{total_count})")
+
         self.update_summary_table()
